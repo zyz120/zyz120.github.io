@@ -20,23 +20,33 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
-<meta property="og:type" content="website">
-<meta property="og:title" content="四次元">
-<meta property="og:url" content="http://example.com/index.html">
+<meta name="description" content="Shader入门精要读书笔记——前置知识 数学篇 二&#x2F;三维笛卡尔坐标系 左手坐标系和右手坐标系 点和矢量 矩阵、矩阵运算、特殊矩阵   矩阵的几何意义：变换在游戏开发中，三维（二维）物体的变换即是矩阵的可视化方式。这里的变化一般包括：平移、旋转和缩放。例如Unity中的Transform即包括了这三个属性。  什么是变换？变换指将数据（位置、方向、甚至颜色等）通过计算进行转换的过程。  变换中的一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Shader入门精要读书笔记（前置知识）">
+<meta property="og:url" content="http://example.com/2021/09/26/Shader%E5%85%A5%E9%97%A8%E7%B2%BE%E8%A6%81%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86%EF%BC%89/index.html">
 <meta property="og:site_name" content="四次元">
+<meta property="og:description" content="Shader入门精要读书笔记——前置知识 数学篇 二&#x2F;三维笛卡尔坐标系 左手坐标系和右手坐标系 点和矢量 矩阵、矩阵运算、特殊矩阵   矩阵的几何意义：变换在游戏开发中，三维（二维）物体的变换即是矩阵的可视化方式。这里的变化一般包括：平移、旋转和缩放。例如Unity中的Transform即包括了这三个属性。  什么是变换？变换指将数据（位置、方向、甚至颜色等）通过计算进行转换的过程。  变换中的一">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211015161235.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211015161747.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211015162714.png">
+<meta property="article:published_time" content="2021-09-26T09:12:30.000Z">
+<meta property="article:modified_time" content="2021-10-15T10:50:42.088Z">
 <meta property="article:author" content="名が無い生身">
+<meta property="article:tag" content="技术">
+<meta property="article:tag" content="读书笔记">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211015161235.png">
 
 
-<link rel="canonical" href="http://example.com/">
+<link rel="canonical" href="http://example.com/2021/09/26/Shader%E5%85%A5%E9%97%A8%E7%B2%BE%E8%A6%81%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86%EF%BC%89/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":true,"isPost":false,"lang":"en","comments":"","permalink":"","path":"index.html","title":""}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2021/09/26/Shader%E5%85%A5%E9%97%A8%E7%B2%BE%E8%A6%81%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86%EF%BC%89/","path":"2021/09/26/Shader入门精要读书笔记（前置知识）/","title":"Shader入门精要读书笔记（前置知识）"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>四次元</title>
+<title>Shader入门精要读书笔记（前置知识） | 四次元</title>
   
 
 
@@ -91,7 +101,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           Table of Contents
@@ -104,6 +114,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Shader%E5%85%A5%E9%97%A8%E7%B2%BE%E8%A6%81%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="nav-number">1.</span> <span class="nav-text">Shader入门精要读书笔记——前置知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E5%AD%A6%E7%AF%87"><span class="nav-number">1.1.</span> <span class="nav-text">数学篇</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9F%A9%E9%98%B5%E7%9A%84%E5%87%A0%E4%BD%95%E6%84%8F%E4%B9%89%EF%BC%9A%E5%8F%98%E6%8D%A2"><span class="nav-number">1.2.</span> <span class="nav-text">矩阵的几何意义：变换</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%BD%90%E6%AC%A1%E5%9D%90%E6%A0%87"><span class="nav-number">1.2.1.</span> <span class="nav-text">齐次坐标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%8D%E5%90%88%E5%8F%98%E6%8D%A2"><span class="nav-number">1.2.2.</span> <span class="nav-text">复合变换</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9D%90%E6%A0%87%E7%A9%BA%E9%97%B4"><span class="nav-number">1.3.</span> <span class="nav-text">坐标空间</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9D%90%E6%A0%87%E7%A9%BA%E9%97%B4%E7%9A%84%E8%BD%AC%E6%8D%A2"><span class="nav-number">1.3.0.1.</span> <span class="nav-text">坐标空间的转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E7%9A%84%E5%9D%90%E6%A0%87%E7%A9%BA%E9%97%B4"><span class="nav-number">1.3.0.2.</span> <span class="nav-text">常用的坐标空间</span></a></li></ol></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -155,16 +166,17 @@
 </noscript>
 
 
-    <div class="main-inner index posts-expand">
+    <div class="main-inner post posts-expand">
 
-    
+
+  
 
 
 <div class="post-block">
   
   
 
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/26/Shader%E5%85%A5%E9%97%A8%E7%B2%BE%E8%A6%81%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86%EF%BC%89/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -177,9 +189,9 @@
       <meta itemprop="name" content="四次元">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/09/26/Shader%E5%85%A5%E9%97%A8%E7%B2%BE%E8%A6%81%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86%EF%BC%89/" class="post-title-link" itemprop="url">Shader入门精要读书笔记（前置知识）</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          Shader入门精要读书笔记（前置知识）
+        </h1>
 
         <div class="post-meta-container">
           <div class="post-meta">
@@ -218,7 +230,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="Shader入门精要读书笔记——前置知识"><a href="#Shader入门精要读书笔记——前置知识" class="headerlink" title="Shader入门精要读书笔记——前置知识"></a>Shader入门精要读书笔记——前置知识</h1><hr>
+        <h1 id="Shader入门精要读书笔记——前置知识"><a href="#Shader入门精要读书笔记——前置知识" class="headerlink" title="Shader入门精要读书笔记——前置知识"></a>Shader入门精要读书笔记——前置知识</h1><hr>
 <h2 id="数学篇"><a href="#数学篇" class="headerlink" title="数学篇"></a>数学篇</h2><ul>
 <li>二/三维笛卡尔坐标系</li>
 <li>左手坐标系和右手坐标系</li>
@@ -280,7 +292,6 @@
 </blockquote>
 <p>观察空间即摄像机空间（Camera Space），是以摄像机（也就是观察者）为原点的空间坐标系。</p>
 
-      
     </div>
 
     
@@ -288,90 +299,26 @@
     
 
     <footer class="post-footer">
-        <div class="post-eof"></div>
-      
+          <div class="post-tags">
+              <a href="/tags/%E6%8A%80%E6%9C%AF/" rel="tag"># 技术</a>
+              <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag"># 读书笔记</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/08/26/hello-world/" rel="prev" title="Hello World">
+                  <i class="fa fa-chevron-left"></i> Hello World
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
     </footer>
   </article>
 </div>
 
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/26/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="名が無い生身">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="四次元">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/08/26/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-08-26 16:28:10" itemprop="dateCreated datePublished" datetime="2021-08-26T16:28:10+08:00">2021-08-26</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 1985-10-26 16:15:00" itemprop="dateModified" datetime="1985-10-26T16:15:00+08:00">1985-10-26</time>
-      </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
 
 
 
