@@ -38,7 +38,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211020225300.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211020224117.png">
 <meta property="article:published_time" content="2021-09-26T09:12:30.000Z">
-<meta property="article:modified_time" content="2021-10-20T14:59:47.591Z">
+<meta property="article:modified_time" content="2021-11-02T06:52:15.438Z">
 <meta property="article:author" content="名が無い生身">
 <meta property="article:tag" content="技术">
 <meta property="article:tag" content="读书笔记">
@@ -121,7 +121,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Shader%E5%85%A5%E9%97%A8%E7%B2%BE%E8%A6%81%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="nav-number">1.</span> <span class="nav-text">Shader入门精要读书笔记——前置知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E5%AD%A6%E7%AF%87"><span class="nav-number">1.1.</span> <span class="nav-text">数学篇</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9F%A9%E9%98%B5%E7%9A%84%E5%87%A0%E4%BD%95%E6%84%8F%E4%B9%89%EF%BC%9A%E5%8F%98%E6%8D%A2"><span class="nav-number">1.2.</span> <span class="nav-text">矩阵的几何意义：变换</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%BD%90%E6%AC%A1%E5%9D%90%E6%A0%87"><span class="nav-number">1.2.1.</span> <span class="nav-text">齐次坐标</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%98%E6%8D%A2%E7%9F%A9%E9%98%B5"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">变换矩阵</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B9%B3%E7%A7%BB%E7%9F%A9%E9%98%B5"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">平移矩阵</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%A9%E6%94%BE%E7%9F%A9%E9%98%B5"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">缩放矩阵</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%97%8B%E8%BD%AC%E7%9F%A9%E9%98%B5"><span class="nav-number">1.2.1.4.</span> <span class="nav-text">旋转矩阵</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%8D%E5%90%88%E5%8F%98%E6%8D%A2"><span class="nav-number">1.2.2.</span> <span class="nav-text">复合变换</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9D%90%E6%A0%87%E7%A9%BA%E9%97%B4"><span class="nav-number">1.3.</span> <span class="nav-text">坐标空间</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9D%90%E6%A0%87%E7%A9%BA%E9%97%B4%E7%9A%84%E8%BD%AC%E6%8D%A2"><span class="nav-number">1.3.1.</span> <span class="nav-text">坐标空间的转换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E7%9A%84%E5%9D%90%E6%A0%87%E7%A9%BA%E9%97%B4"><span class="nav-number">1.3.2.</span> <span class="nav-text">常用的坐标空间</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%96%E7%95%8C%E7%A9%BA%E9%97%B4%EF%BC%88World-Space%EF%BC%89"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">世界空间（World Space）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%82%E5%AF%9F%E7%A9%BA%E9%97%B4%EF%BC%88View-Space%EF%BC%89"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">观察空间（View Space）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A3%81%E5%89%AA%E7%A9%BA%E9%97%B4%EF%BC%88Clip-Space%EF%BC%89"><span class="nav-number">1.3.2.3.</span> <span class="nav-text">裁剪空间（Clip Space）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B1%8F%E5%B9%95%E7%A9%BA%E9%97%B4%EF%BC%88Screen-Space%EF%BC%89"><span class="nav-number">1.3.2.4.</span> <span class="nav-text">屏幕空间（Screen Space）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%8E%E7%BB%AD"><span class="nav-number">1.3.2.5.</span> <span class="nav-text">后续</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.3.2.6.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Shader%E5%85%A5%E9%97%A8%E7%B2%BE%E8%A6%81%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="nav-number">1.</span> <span class="nav-text">Shader入门精要读书笔记——前置知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E5%AD%A6%E7%AF%87"><span class="nav-number">1.1.</span> <span class="nav-text">数学篇</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9F%A9%E9%98%B5%E7%9A%84%E5%87%A0%E4%BD%95%E6%84%8F%E4%B9%89%EF%BC%9A%E5%8F%98%E6%8D%A2"><span class="nav-number">1.2.</span> <span class="nav-text">矩阵的几何意义：变换</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%BD%90%E6%AC%A1%E5%9D%90%E6%A0%87"><span class="nav-number">1.2.1.</span> <span class="nav-text">齐次坐标</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%98%E6%8D%A2%E7%9F%A9%E9%98%B5"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">变换矩阵</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B9%B3%E7%A7%BB%E7%9F%A9%E9%98%B5"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">平移矩阵</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%A9%E6%94%BE%E7%9F%A9%E9%98%B5"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">缩放矩阵</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%97%8B%E8%BD%AC%E7%9F%A9%E9%98%B5"><span class="nav-number">1.2.1.4.</span> <span class="nav-text">旋转矩阵</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%8D%E5%90%88%E5%8F%98%E6%8D%A2"><span class="nav-number">1.2.2.</span> <span class="nav-text">复合变换</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9D%90%E6%A0%87%E7%A9%BA%E9%97%B4"><span class="nav-number">1.3.</span> <span class="nav-text">坐标空间</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9D%90%E6%A0%87%E7%A9%BA%E9%97%B4%E7%9A%84%E8%BD%AC%E6%8D%A2"><span class="nav-number">1.3.1.</span> <span class="nav-text">坐标空间的转换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E7%9A%84%E5%9D%90%E6%A0%87%E7%A9%BA%E9%97%B4"><span class="nav-number">1.3.2.</span> <span class="nav-text">常用的坐标空间</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%96%E7%95%8C%E7%A9%BA%E9%97%B4%EF%BC%88World-Space%EF%BC%89"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">世界空间（World Space）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%82%E5%AF%9F%E7%A9%BA%E9%97%B4%EF%BC%88View-Space%EF%BC%89"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">观察空间（View Space）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A3%81%E5%89%AA%E7%A9%BA%E9%97%B4%EF%BC%88Clip-Space%EF%BC%89"><span class="nav-number">1.3.2.3.</span> <span class="nav-text">裁剪空间（Clip Space）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B1%8F%E5%B9%95%E7%A9%BA%E9%97%B4%EF%BC%88Screen-Space%EF%BC%89"><span class="nav-number">1.3.2.4.</span> <span class="nav-text">屏幕空间（Screen Space）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8E%E7%BB%AD"><span class="nav-number">1.4.</span> <span class="nav-text">后续</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.4.1.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -134,7 +134,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-count">3</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -215,7 +215,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-10-20 22:59:47" itemprop="dateModified" datetime="2021-10-20T22:59:47+08:00">2021-10-20</time>
+        <time title="Modified: 2021-11-02 14:52:15" itemprop="dateModified" datetime="2021-11-02T14:52:15+08:00">2021-11-02</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -223,7 +223,7 @@
       </span>
       <span class="post-meta-item-text">In</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Testing/" itemprop="url" rel="index"><span itemprop="name">Testing</span></a>
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E5%90%91/" itemprop="url" rel="index"><span itemprop="name">技术向</span></a>
         </span>
     </span>
 
@@ -302,9 +302,9 @@
 </ul>
 <p>如下图，为变换后的<strong>深度值随原Z坐标</strong>变化的曲线<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211020225300.png" alt=""></p>
 <hr>
-<h4 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h4><p>在一系列变换之后，<strong>片元（fragment）</strong>还需要通过一系列测试，如<strong>深度测试</strong>，<strong>模板测试</strong>等之后，才可以正式将颜色着色在该像素上。<br>此外，在着色的时候，也有着许多不同的混合方式，如<strong>不透明</strong>物体会将自身颜色直接替换掉当前像素的<strong>颜色缓冲</strong>，并更新<strong>深度值</strong>；而<strong>透明</strong>物体会将自身颜色与<strong>颜色缓冲</strong>中的颜色值进行<strong>混合</strong>，这里的混合又有多重计算方式，如常见的计算方式是<br>$Color_{Final} = Alpha * Color_{Fragment} + (1 - Alpha) * Color_{Origin}$</p>
+<h2 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h2><p>在一系列变换之后，<strong>片元（fragment）</strong>还需要通过一系列测试，如<strong>深度测试</strong>，<strong>模板测试</strong>等之后，才可以正式将颜色着色在该像素上。<br>此外，在着色的时候，也有着许多不同的混合方式，如<strong>不透明</strong>物体会将自身颜色直接替换掉当前像素的<strong>颜色缓冲</strong>，并更新<strong>深度值</strong>；而<strong>透明</strong>物体会将自身颜色与<strong>颜色缓冲</strong>中的颜色值进行<strong>混合</strong>，这里的混合又有多重计算方式，如常见的计算方式是<br>$Color_{Final} = Alpha * Color_{Fragment} + (1 - Alpha) * Color_{Origin}$</p>
 <hr>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>这里整理一下上述提到的渲染管线的整体流程如下<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211020224117.png" alt=""></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>这里整理一下上述提到的渲染管线的整体流程如下<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211020224117.png" alt=""></p>
 <p>经过上述的步骤，模型中的顶点就正式被渲染到了显示器的像素上。</p>
 
     </div>
@@ -328,6 +328,9 @@
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/2021/11/02/RayMarching-BasicLighting/" rel="next" title="RayMarching+BasicLighting">
+                  RayMarching+BasicLighting <i class="fa fa-chevron-right"></i>
+                </a>
             </div>
           </div>
     </footer>

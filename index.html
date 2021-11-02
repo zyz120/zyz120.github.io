@@ -116,7 +116,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-count">3</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -165,6 +165,111 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/11/02/RayMarching-BasicLighting/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="名が無い生身">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="四次元">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/11/02/RayMarching-BasicLighting/" class="post-title-link" itemprop="url">RayMarching+BasicLighting</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-11-02 14:46:42 / Modified: 19:08:31" itemprop="dateCreated datePublished" datetime="2021-11-02T14:46:42+08:00">2021-11-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E5%90%91/" itemprop="url" rel="index"><span itemprop="name">技术向</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="Ray-Marching-amp-Basic-Lighting"><a href="#Ray-Marching-amp-Basic-Lighting" class="headerlink" title="Ray Marching &amp; Basic Lighting"></a>Ray Marching &amp; Basic Lighting</h1><p>最近去学习了一下Ray marching相关的知识，虽然仅仅是一个入门。于是我准备将raymarching和基础的光照模型放在一篇文章里学习记录一下。</p>
+<hr>
+<h2 id="Ray-Marching（光线步进）"><a href="#Ray-Marching（光线步进）" class="headerlink" title="Ray Marching（光线步进）"></a>Ray Marching（光线步进）</h2><h3 id="Ray-Marching概念"><a href="#Ray-Marching概念" class="headerlink" title="Ray Marching概念"></a>Ray Marching概念</h3><p>先从Ray marching开始讲起，从名字可以看出，raymarching是一个<strong>模拟光线不断前进</strong>的过程。<br>我们想象从观察点（人眼或者相机）开始，对视线范围内的每一个方向都发射一条<strong>射线（Ray）</strong>，那么这条射线如果与某样物体相交，则这个方向上我们需要绘制这个物体，最终当我们对每条射线都这样检查完毕时，所有相交点都绘制完毕了（对于计算机来说，这里的“每条射线”就变成了从相机到屏幕每个像素的方向射线）。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211102150236.png" alt=""></p>
+<hr>
+<h3 id="判断相交"><a href="#判断相交" class="headerlink" title="判断相交"></a>判断相交</h3><p>显然，这里我们会遇到一个问题，就是如何判断射线是否与某样物体相交。在raymarching中，我们采用<strong>找最短距离步进</strong>的方式来计算，即，对于一个物体，我们每次<strong>沿射线步进的距离</strong>是从<strong>该点到该物体的最短距离</strong>，这样我们就保证了，在这个步进半径内的任何一个点，都不会出现在该物体的内部。当我们某一次寻找该距离的值<strong>小于阈值</strong>时，我们就判断这个射线方向与物体<strong>相交</strong>，当总距离<strong>大于最大阈值</strong>时，我们判断这条射线方向没有物体。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211102150907.png" alt=""><br>大体代码实现如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">float</span> <span class="title">RayMarching</span><span class="params">(float3 rayOrigin, float3 rayDir)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">float</span> total = <span class="number">0.0f</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; MAX_ITERATION; i++)</span><br><span class="line">    &#123;</span><br><span class="line">    	<span class="keyword">if</span>(total &gt; MAX_DISTANCE)</span><br><span class="line">    	&#123;</span><br><span class="line">    		<span class="keyword">return</span> <span class="number">-1.0f</span>;</span><br><span class="line">    	&#125;</span><br><span class="line">		float3 pos = rayOrigin + rayDir * total;</span><br><span class="line">		<span class="keyword">float</span> distance = <span class="built_in">GetDistance</span>(pos);</span><br><span class="line">		</span><br><span class="line">		total += distance;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">if</span>(distance &lt; MIN_DISTANCE)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">return</span> total;</span><br><span class="line">		&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1.0f</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里我们会遇到第二个问题，就是代码中的GetDistance函数，我们如何知道某一点到某物体的最短距离呢，这里需要用到<strong>有符号距离场（Signed Distance Field, SDF）</strong>来计算。</p>
+<hr>
+<h3 id="有符号距离场（SDF）"><a href="#有符号距离场（SDF）" class="headerlink" title="有符号距离场（SDF）"></a>有符号距离场（SDF）</h3><p>有符号距离场可以看做一个<strong>对空间的表达函数</strong>，我们用一个方式来表达离某一点最近的空间距离（一般是一个<strong>标量场函数</strong>或一张<strong>立体纹理</strong>）。似乎SDF可以用来做AO（环境光遮蔽）和软阴影（Soft Shadow），如UE4，但是目前没有学习到，留个（TODO）。<br>在raymarching中，我们使用<strong>标量场函数</strong>来计算某点到物体的最短距离，这里拿最简单的球体来举例。我们有$Param_{Sphere}  = (x, y, z, w)$，这里记作S，其xyz分量为球心坐标，w分量为球的半径，又有$位置P(x,y,z)$，显然，从位置P到球S的最短距离为$\sqrt{(P.x - S.x)^2 + (P.y - S.y)^2 + (P.z - S.z)^2} - w$。<br>所以我们可以得到球体的标量场函数如下</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">float</span> <span class="title">SDF_Sphere</span><span class="params">(float3 pos, float4 param)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="built_in">length</span>(pos - param.xyz) - param.w;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>除了球体，还有许多不同的标量场函数，如锥体、长方体、甜甜圈等，具体可以看<a target="_blank" rel="noopener" href="https://www.iquilezles.org/www/articles/distfunctions/distfunctions.htm">&#x1F4CC;InigoQuilez大佬的文章</a></p>
+<hr>
+<h3 id="SDF的其它计算"><a href="#SDF的其它计算" class="headerlink" title="SDF的其它计算"></a>SDF的其它计算</h3><p>上述标量场函数仅仅是单个几何体的表达，通过对不同标量场的计算，我们可以得到<strong>多个几何体</strong>的<strong>布尔运算结果</strong>，如交集、差集、并集等。<br>这里仍然以最简单的交集为例，我们只需要将两个SDF函数的结果求得最小值即可，代码如下<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">float</span> <span class="title">Operation_Union</span><span class="params">(<span class="keyword">float</span> sdf1, <span class="keyword">float</span> sdf2)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="built_in">min</span>(sdf1, sdf2);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>此外，还有一些复杂的计算如平滑过渡的并集（Smooth Union）等算法，均可以在上述IQ的文章中找到。</p>
+<hr>
+<h3 id="SDF的其他应用"><a href="#SDF的其他应用" class="headerlink" title="SDF的其他应用"></a>SDF的其他应用</h3><p>了解SDF之后，我们可以在raymarching的时候做一些trick来实现一些有趣的效果，如我们对raymarching时传入的位置坐标做<strong>周期性的取模</strong>，遍可以实现无限循环的模型效果，如下图所示，我将距离函数$f(x)=x$转换为周期为a的函数，即可以对空间内每一个$a^3$的立方体进行SDF计算，从而得到无限的空间。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211102163917.png" alt=""><br>如下图是对一个球体和立方体求差集后对齐周期性采样的结果<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/EndlessEx1.gif" alt=""><br>可以看到raymarching通过对SDF的简单计算便可以得到强大的结果。这里我是参考于<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=ABb4opx08o8&amp;t=3s">&#x1F4CC;油管上对ray marching的一个详细教程</a>。</p>
+<hr>
+<h2 id="着色（Shading）"><a href="#着色（Shading）" class="headerlink" title="着色（Shading）"></a>着色（Shading）</h2><p>在使用射线以及SDF处理完<strong>几何信息</strong>之后，我们需要对得到的几何信息（对应在计算机屏幕上则为像素）进行<strong>着色</strong>，这里我将使用最基础的光照模型来进行raymarching下着色的说明。</p>
+<h3 id="计算法线"><a href="#计算法线" class="headerlink" title="计算法线"></a>计算法线</h3><p>在基础光照模型中我们对光的计算离不开几何体的<strong>表面法线</strong>，在一般的渲染流程中，法线信息通常来源于模型的<strong>顶点信息</strong>或是<strong>法线贴图</strong>，在raymarching中，我们没有这两个信息，因此需要自己计算表面法线。<br>这里我们通过求<strong>梯度</strong>的公式来获得表面法线，即计算点$P(x,y,z)$在三个坐标轴方向上<strong>SDF函数值</strong>的偏导，来得到该点的法线方向。<br>$n = normalize(\nabla f(p))$<br>$\nabla f(p) =\begin{Bmatrix} \frac{df(p)}{dx}, \frac{df(p)}{dy}, \frac{df(p)}{dz} \end{Bmatrix}$<br>$\frac{df(p)}{dx} \simeq \frac{f(p + (h, 0, 0)) - f(p)}{h}$</p>
+<p>如上所示，我们便完成了raymarching某交点（屏幕像素）的法线计算，用代码简单计算如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">float2 tinyVal = <span class="built_in">float2</span>(<span class="number">0.00001</span>, <span class="number">0.0</span>);</span><br><span class="line">float3 normal = <span class="built_in">float3</span></span><br><span class="line">(</span><br><span class="line">	<span class="built_in">GetDistance</span>(pos + tinyVal.xyy) - <span class="built_in">GetDistance</span>(pos),</span><br><span class="line">	<span class="built_in">GetDistance</span>(pos + tinyVal.yxy) - <span class="built_in">GetDistance</span>(pos),</span><br><span class="line">	<span class="built_in">GetDistance</span>(pos + tinyVal.yyx) - <span class="built_in">GetDistance</span>(pos)</span><br><span class="line">);</span><br><span class="line"><span class="keyword">return</span> <span class="built_in">normalize</span>(normal);</span><br></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="Lambert漫反射模型"><a href="#Lambert漫反射模型" class="headerlink" title="Lambert漫反射模型"></a>Lambert漫反射模型</h3><p>这里我们使用基础的<strong>Lambert模型</strong>来计算漫反射，以平行光为例，我们认为从<strong>光源</strong>出射的光线在单位面积上的<strong>辐照度</strong>来表示，那么当光线是斜着入射到物体表面时，相同辐照度反应在物体表面的面积就增大了，因此亮度也会相应地降低，这里我们可以用<strong>表面法线与光线入射方向的点积</strong>来计算这个差异，如下图所示。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211102180250.png" alt=""><br>这里需要注意的是，对于模型背面的点，其法线与入射光方向的点积结果为<strong>负数</strong>，在图形学中负数对于颜色的影响与0一样（均为黑色），但是为了让后续的计算不出现问题，我们对结果取<strong>非负处理</strong>，因此最终漫反射颜色计算公式为<br>$C_{diffuse} = max(0, dot(normal, lightDir)) <em> C_{light} </em> I_{light}$<br>其中C为颜色，I为入射光辐照度。</p>
+<h4 id="半Lambert漫反射模型"><a href="#半Lambert漫反射模型" class="headerlink" title="半Lambert漫反射模型"></a>半Lambert漫反射模型</h4><p>从上述公式可以看出，Lambert漫反射模型会让模型<strong>背向光源</strong>的一半完全呈现黑色（因为点积为负），因此出现了<strong>半Lambert模型</strong>，其计算也很简单，即把上述公式中的max()部分改变为：<br>$dot(normal, lightDir) <em> 0.5 + 0.5$<br>即<br>$C_{diffuse} = (dot(normal, lightDir) </em> 0.5 + 0.5) <em> C_{light} </em> I_{light}$<br>我们将两者的函数图像及实际效果作比较，可以看出半Lambert模型的结果会比前者拥有更多层次。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211102190412.png" alt=""></p>
+<hr>
+<h3 id="Blinn-Phong高光模型"><a href="#Blinn-Phong高光模型" class="headerlink" title="Blinn-Phong高光模型"></a>Blinn-Phong高光模型</h3><p>TODO</p>
+<hr>
+<h3 id="深度缓存与遮挡"><a href="#深度缓存与遮挡" class="headerlink" title="深度缓存与遮挡"></a>深度缓存与遮挡</h3><p>TODO</p>
+<hr>
+<h3 id="硬阴影与软阴影"><a href="#硬阴影与软阴影" class="headerlink" title="硬阴影与软阴影"></a>硬阴影与软阴影</h3><p>TODO</p>
+<hr>
+<h3 id="AO环境光遮蔽"><a href="#AO环境光遮蔽" class="headerlink" title="AO环境光遮蔽"></a>AO环境光遮蔽</h3><p>TODO</p>
+<hr>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>TODO</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/26/Shader%E5%85%A5%E9%97%A8%E7%B2%BE%E8%A6%81%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86%EF%BC%89/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -196,7 +301,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-10-20 22:59:47" itemprop="dateModified" datetime="2021-10-20T22:59:47+08:00">2021-10-20</time>
+        <time title="Modified: 2021-11-02 14:52:15" itemprop="dateModified" datetime="2021-11-02T14:52:15+08:00">2021-11-02</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -204,7 +309,7 @@
       </span>
       <span class="post-meta-item-text">In</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Testing/" itemprop="url" rel="index"><span itemprop="name">Testing</span></a>
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E5%90%91/" itemprop="url" rel="index"><span itemprop="name">技术向</span></a>
         </span>
     </span>
 
@@ -283,9 +388,9 @@
 </ul>
 <p>如下图，为变换后的<strong>深度值随原Z坐标</strong>变化的曲线<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211020225300.png" alt=""></p>
 <hr>
-<h4 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h4><p>在一系列变换之后，<strong>片元（fragment）</strong>还需要通过一系列测试，如<strong>深度测试</strong>，<strong>模板测试</strong>等之后，才可以正式将颜色着色在该像素上。<br>此外，在着色的时候，也有着许多不同的混合方式，如<strong>不透明</strong>物体会将自身颜色直接替换掉当前像素的<strong>颜色缓冲</strong>，并更新<strong>深度值</strong>；而<strong>透明</strong>物体会将自身颜色与<strong>颜色缓冲</strong>中的颜色值进行<strong>混合</strong>，这里的混合又有多重计算方式，如常见的计算方式是<br>$Color_{Final} = Alpha * Color_{Fragment} + (1 - Alpha) * Color_{Origin}$</p>
+<h2 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h2><p>在一系列变换之后，<strong>片元（fragment）</strong>还需要通过一系列测试，如<strong>深度测试</strong>，<strong>模板测试</strong>等之后，才可以正式将颜色着色在该像素上。<br>此外，在着色的时候，也有着许多不同的混合方式，如<strong>不透明</strong>物体会将自身颜色直接替换掉当前像素的<strong>颜色缓冲</strong>，并更新<strong>深度值</strong>；而<strong>透明</strong>物体会将自身颜色与<strong>颜色缓冲</strong>中的颜色值进行<strong>混合</strong>，这里的混合又有多重计算方式，如常见的计算方式是<br>$Color_{Final} = Alpha * Color_{Fragment} + (1 - Alpha) * Color_{Origin}$</p>
 <hr>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>这里整理一下上述提到的渲染管线的整体流程如下<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211020224117.png" alt=""></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>这里整理一下上述提到的渲染管线的整体流程如下<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211020224117.png" alt=""></p>
 <p>经过上述的步骤，模型中的顶点就正式被渲染到了显示器的像素上。</p>
 
       

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="Ray Marching &amp; Basic Lighting最近去学习了一下Ray marching相关的知识，虽然仅仅是一个入门。于是我准备将raymarching和基础的光照模型放在一篇文章里学习记录一下。  Ray Marching（光线步进）Ray Marching概念先从Ray marching开始讲起，从名字可以看出，raymarching是一个模拟光线不断前进的过程。我们想象从">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RayMarching+BasicLighting">
+<meta property="og:url" content="http://example.com/2021/11/02/RayMarching-BasicLighting/index.html">
+<meta property="og:site_name" content="四次元">
+<meta property="og:description" content="Ray Marching &amp; Basic Lighting最近去学习了一下Ray marching相关的知识，虽然仅仅是一个入门。于是我准备将raymarching和基础的光照模型放在一篇文章里学习记录一下。  Ray Marching（光线步进）Ray Marching概念先从Ray marching开始讲起，从名字可以看出，raymarching是一个模拟光线不断前进的过程。我们想象从">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211102150236.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211102150907.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211102163917.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/EndlessEx1.gif">
+<meta property="og:image" content="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211102180250.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211102190412.png">
+<meta property="article:published_time" content="2021-11-02T06:46:42.000Z">
+<meta property="article:modified_time" content="2021-11-02T11:08:31.406Z">
+<meta property="article:author" content="名が無い生身">
+<meta property="article:tag" content="技术">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211102150236.png">
+
+
+<link rel="canonical" href="http://example.com/2021/11/02/RayMarching-BasicLighting/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2021/11/02/RayMarching-BasicLighting/","path":"2021/11/02/RayMarching-BasicLighting/","title":"RayMarching+BasicLighting"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>RayMarching+BasicLighting | 四次元</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">四次元</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">たましいホーム</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Ray-Marching-amp-Basic-Lighting"><span class="nav-number">1.</span> <span class="nav-text">Ray Marching &amp; Basic Lighting</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Ray-Marching%EF%BC%88%E5%85%89%E7%BA%BF%E6%AD%A5%E8%BF%9B%EF%BC%89"><span class="nav-number">1.1.</span> <span class="nav-text">Ray Marching（光线步进）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Ray-Marching%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.1.</span> <span class="nav-text">Ray Marching概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A4%E6%96%AD%E7%9B%B8%E4%BA%A4"><span class="nav-number">1.1.2.</span> <span class="nav-text">判断相交</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%89%E7%AC%A6%E5%8F%B7%E8%B7%9D%E7%A6%BB%E5%9C%BA%EF%BC%88SDF%EF%BC%89"><span class="nav-number">1.1.3.</span> <span class="nav-text">有符号距离场（SDF）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SDF%E7%9A%84%E5%85%B6%E5%AE%83%E8%AE%A1%E7%AE%97"><span class="nav-number">1.1.4.</span> <span class="nav-text">SDF的其它计算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SDF%E7%9A%84%E5%85%B6%E4%BB%96%E5%BA%94%E7%94%A8"><span class="nav-number">1.1.5.</span> <span class="nav-text">SDF的其他应用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9D%80%E8%89%B2%EF%BC%88Shading%EF%BC%89"><span class="nav-number">1.2.</span> <span class="nav-text">着色（Shading）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E6%B3%95%E7%BA%BF"><span class="nav-number">1.2.1.</span> <span class="nav-text">计算法线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Lambert%E6%BC%AB%E5%8F%8D%E5%B0%84%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.2.2.</span> <span class="nav-text">Lambert漫反射模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%8ALambert%E6%BC%AB%E5%8F%8D%E5%B0%84%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">半Lambert漫反射模型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Blinn-Phong%E9%AB%98%E5%85%89%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.2.3.</span> <span class="nav-text">Blinn-Phong高光模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%B1%E5%BA%A6%E7%BC%93%E5%AD%98%E4%B8%8E%E9%81%AE%E6%8C%A1"><span class="nav-number">1.2.4.</span> <span class="nav-text">深度缓存与遮挡</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A1%AC%E9%98%B4%E5%BD%B1%E4%B8%8E%E8%BD%AF%E9%98%B4%E5%BD%B1"><span class="nav-number">1.2.5.</span> <span class="nav-text">硬阴影与软阴影</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AO%E7%8E%AF%E5%A2%83%E5%85%89%E9%81%AE%E8%94%BD"><span class="nav-number">1.2.6.</span> <span class="nav-text">AO环境光遮蔽</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.3.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">名が無い生身</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/11/02/RayMarching-BasicLighting/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="名が無い生身">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="四次元">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          RayMarching+BasicLighting
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-11-02 14:46:42 / Modified: 19:08:31" itemprop="dateCreated datePublished" datetime="2021-11-02T14:46:42+08:00">2021-11-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E5%90%91/" itemprop="url" rel="index"><span itemprop="name">技术向</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="Ray-Marching-amp-Basic-Lighting"><a href="#Ray-Marching-amp-Basic-Lighting" class="headerlink" title="Ray Marching &amp; Basic Lighting"></a>Ray Marching &amp; Basic Lighting</h1><p>最近去学习了一下Ray marching相关的知识，虽然仅仅是一个入门。于是我准备将raymarching和基础的光照模型放在一篇文章里学习记录一下。</p>
+<hr>
+<h2 id="Ray-Marching（光线步进）"><a href="#Ray-Marching（光线步进）" class="headerlink" title="Ray Marching（光线步进）"></a>Ray Marching（光线步进）</h2><h3 id="Ray-Marching概念"><a href="#Ray-Marching概念" class="headerlink" title="Ray Marching概念"></a>Ray Marching概念</h3><p>先从Ray marching开始讲起，从名字可以看出，raymarching是一个<strong>模拟光线不断前进</strong>的过程。<br>我们想象从观察点（人眼或者相机）开始，对视线范围内的每一个方向都发射一条<strong>射线（Ray）</strong>，那么这条射线如果与某样物体相交，则这个方向上我们需要绘制这个物体，最终当我们对每条射线都这样检查完毕时，所有相交点都绘制完毕了（对于计算机来说，这里的“每条射线”就变成了从相机到屏幕每个像素的方向射线）。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211102150236.png" alt=""></p>
+<hr>
+<h3 id="判断相交"><a href="#判断相交" class="headerlink" title="判断相交"></a>判断相交</h3><p>显然，这里我们会遇到一个问题，就是如何判断射线是否与某样物体相交。在raymarching中，我们采用<strong>找最短距离步进</strong>的方式来计算，即，对于一个物体，我们每次<strong>沿射线步进的距离</strong>是从<strong>该点到该物体的最短距离</strong>，这样我们就保证了，在这个步进半径内的任何一个点，都不会出现在该物体的内部。当我们某一次寻找该距离的值<strong>小于阈值</strong>时，我们就判断这个射线方向与物体<strong>相交</strong>，当总距离<strong>大于最大阈值</strong>时，我们判断这条射线方向没有物体。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211102150907.png" alt=""><br>大体代码实现如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">float</span> <span class="title">RayMarching</span><span class="params">(float3 rayOrigin, float3 rayDir)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">float</span> total = <span class="number">0.0f</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; MAX_ITERATION; i++)</span><br><span class="line">    &#123;</span><br><span class="line">    	<span class="keyword">if</span>(total &gt; MAX_DISTANCE)</span><br><span class="line">    	&#123;</span><br><span class="line">    		<span class="keyword">return</span> <span class="number">-1.0f</span>;</span><br><span class="line">    	&#125;</span><br><span class="line">		float3 pos = rayOrigin + rayDir * total;</span><br><span class="line">		<span class="keyword">float</span> distance = <span class="built_in">GetDistance</span>(pos);</span><br><span class="line">		</span><br><span class="line">		total += distance;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">if</span>(distance &lt; MIN_DISTANCE)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">return</span> total;</span><br><span class="line">		&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1.0f</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里我们会遇到第二个问题，就是代码中的GetDistance函数，我们如何知道某一点到某物体的最短距离呢，这里需要用到<strong>有符号距离场（Signed Distance Field, SDF）</strong>来计算。</p>
+<hr>
+<h3 id="有符号距离场（SDF）"><a href="#有符号距离场（SDF）" class="headerlink" title="有符号距离场（SDF）"></a>有符号距离场（SDF）</h3><p>有符号距离场可以看做一个<strong>对空间的表达函数</strong>，我们用一个方式来表达离某一点最近的空间距离（一般是一个<strong>标量场函数</strong>或一张<strong>立体纹理</strong>）。似乎SDF可以用来做AO（环境光遮蔽）和软阴影（Soft Shadow），如UE4，但是目前没有学习到，留个（TODO）。<br>在raymarching中，我们使用<strong>标量场函数</strong>来计算某点到物体的最短距离，这里拿最简单的球体来举例。我们有$Param_{Sphere}  = (x, y, z, w)$，这里记作S，其xyz分量为球心坐标，w分量为球的半径，又有$位置P(x,y,z)$，显然，从位置P到球S的最短距离为$\sqrt{(P.x - S.x)^2 + (P.y - S.y)^2 + (P.z - S.z)^2} - w$。<br>所以我们可以得到球体的标量场函数如下</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">float</span> <span class="title">SDF_Sphere</span><span class="params">(float3 pos, float4 param)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="built_in">length</span>(pos - param.xyz) - param.w;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>除了球体，还有许多不同的标量场函数，如锥体、长方体、甜甜圈等，具体可以看<a target="_blank" rel="noopener" href="https://www.iquilezles.org/www/articles/distfunctions/distfunctions.htm">&#x1F4CC;InigoQuilez大佬的文章</a></p>
+<hr>
+<h3 id="SDF的其它计算"><a href="#SDF的其它计算" class="headerlink" title="SDF的其它计算"></a>SDF的其它计算</h3><p>上述标量场函数仅仅是单个几何体的表达，通过对不同标量场的计算，我们可以得到<strong>多个几何体</strong>的<strong>布尔运算结果</strong>，如交集、差集、并集等。<br>这里仍然以最简单的交集为例，我们只需要将两个SDF函数的结果求得最小值即可，代码如下<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">float</span> <span class="title">Operation_Union</span><span class="params">(<span class="keyword">float</span> sdf1, <span class="keyword">float</span> sdf2)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="built_in">min</span>(sdf1, sdf2);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>此外，还有一些复杂的计算如平滑过渡的并集（Smooth Union）等算法，均可以在上述IQ的文章中找到。</p>
+<hr>
+<h3 id="SDF的其他应用"><a href="#SDF的其他应用" class="headerlink" title="SDF的其他应用"></a>SDF的其他应用</h3><p>了解SDF之后，我们可以在raymarching的时候做一些trick来实现一些有趣的效果，如我们对raymarching时传入的位置坐标做<strong>周期性的取模</strong>，遍可以实现无限循环的模型效果，如下图所示，我将距离函数$f(x)=x$转换为周期为a的函数，即可以对空间内每一个$a^3$的立方体进行SDF计算，从而得到无限的空间。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211102163917.png" alt=""><br>如下图是对一个球体和立方体求差集后对齐周期性采样的结果<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/EndlessEx1.gif" alt=""><br>可以看到raymarching通过对SDF的简单计算便可以得到强大的结果。这里我是参考于<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=ABb4opx08o8&amp;t=3s">&#x1F4CC;油管上对ray marching的一个详细教程</a>。</p>
+<hr>
+<h2 id="着色（Shading）"><a href="#着色（Shading）" class="headerlink" title="着色（Shading）"></a>着色（Shading）</h2><p>在使用射线以及SDF处理完<strong>几何信息</strong>之后，我们需要对得到的几何信息（对应在计算机屏幕上则为像素）进行<strong>着色</strong>，这里我将使用最基础的光照模型来进行raymarching下着色的说明。</p>
+<h3 id="计算法线"><a href="#计算法线" class="headerlink" title="计算法线"></a>计算法线</h3><p>在基础光照模型中我们对光的计算离不开几何体的<strong>表面法线</strong>，在一般的渲染流程中，法线信息通常来源于模型的<strong>顶点信息</strong>或是<strong>法线贴图</strong>，在raymarching中，我们没有这两个信息，因此需要自己计算表面法线。<br>这里我们通过求<strong>梯度</strong>的公式来获得表面法线，即计算点$P(x,y,z)$在三个坐标轴方向上<strong>SDF函数值</strong>的偏导，来得到该点的法线方向。<br>$n = normalize(\nabla f(p))$<br>$\nabla f(p) =\begin{Bmatrix} \frac{df(p)}{dx}, \frac{df(p)}{dy}, \frac{df(p)}{dz} \end{Bmatrix}$<br>$\frac{df(p)}{dx} \simeq \frac{f(p + (h, 0, 0)) - f(p)}{h}$</p>
+<p>如上所示，我们便完成了raymarching某交点（屏幕像素）的法线计算，用代码简单计算如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">float2 tinyVal = <span class="built_in">float2</span>(<span class="number">0.00001</span>, <span class="number">0.0</span>);</span><br><span class="line">float3 normal = <span class="built_in">float3</span></span><br><span class="line">(</span><br><span class="line">	<span class="built_in">GetDistance</span>(pos + tinyVal.xyy) - <span class="built_in">GetDistance</span>(pos),</span><br><span class="line">	<span class="built_in">GetDistance</span>(pos + tinyVal.yxy) - <span class="built_in">GetDistance</span>(pos),</span><br><span class="line">	<span class="built_in">GetDistance</span>(pos + tinyVal.yyx) - <span class="built_in">GetDistance</span>(pos)</span><br><span class="line">);</span><br><span class="line"><span class="keyword">return</span> <span class="built_in">normalize</span>(normal);</span><br></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="Lambert漫反射模型"><a href="#Lambert漫反射模型" class="headerlink" title="Lambert漫反射模型"></a>Lambert漫反射模型</h3><p>这里我们使用基础的<strong>Lambert模型</strong>来计算漫反射，以平行光为例，我们认为从<strong>光源</strong>出射的光线在单位面积上的<strong>辐照度</strong>来表示，那么当光线是斜着入射到物体表面时，相同辐照度反应在物体表面的面积就增大了，因此亮度也会相应地降低，这里我们可以用<strong>表面法线与光线入射方向的点积</strong>来计算这个差异，如下图所示。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211102180250.png" alt=""><br>这里需要注意的是，对于模型背面的点，其法线与入射光方向的点积结果为<strong>负数</strong>，在图形学中负数对于颜色的影响与0一样（均为黑色），但是为了让后续的计算不出现问题，我们对结果取<strong>非负处理</strong>，因此最终漫反射颜色计算公式为<br>$C_{diffuse} = max(0, dot(normal, lightDir)) <em> C_{light} </em> I_{light}$<br>其中C为颜色，I为入射光辐照度。</p>
+<h4 id="半Lambert漫反射模型"><a href="#半Lambert漫反射模型" class="headerlink" title="半Lambert漫反射模型"></a>半Lambert漫反射模型</h4><p>从上述公式可以看出，Lambert漫反射模型会让模型<strong>背向光源</strong>的一半完全呈现黑色（因为点积为负），因此出现了<strong>半Lambert模型</strong>，其计算也很简单，即把上述公式中的max()部分改变为：<br>$dot(normal, lightDir) <em> 0.5 + 0.5$<br>即<br>$C_{diffuse} = (dot(normal, lightDir) </em> 0.5 + 0.5) <em> C_{light} </em> I_{light}$<br>我们将两者的函数图像及实际效果作比较，可以看出半Lambert模型的结果会比前者拥有更多层次。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211102190412.png" alt=""></p>
+<hr>
+<h3 id="Blinn-Phong高光模型"><a href="#Blinn-Phong高光模型" class="headerlink" title="Blinn-Phong高光模型"></a>Blinn-Phong高光模型</h3><p>TODO</p>
+<hr>
+<h3 id="深度缓存与遮挡"><a href="#深度缓存与遮挡" class="headerlink" title="深度缓存与遮挡"></a>深度缓存与遮挡</h3><p>TODO</p>
+<hr>
+<h3 id="硬阴影与软阴影"><a href="#硬阴影与软阴影" class="headerlink" title="硬阴影与软阴影"></a>硬阴影与软阴影</h3><p>TODO</p>
+<hr>
+<h3 id="AO环境光遮蔽"><a href="#AO环境光遮蔽" class="headerlink" title="AO环境光遮蔽"></a>AO环境光遮蔽</h3><p>TODO</p>
+<hr>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>TODO</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%8A%80%E6%9C%AF/" rel="tag"># 技术</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/09/26/Shader%E5%85%A5%E9%97%A8%E7%B2%BE%E8%A6%81%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86%EF%BC%89/" rel="prev" title="Shader入门精要读书笔记（前置知识）">
+                  <i class="fa fa-chevron-left"></i> Shader入门精要读书笔记（前置知识）
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">名が無い生身</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
