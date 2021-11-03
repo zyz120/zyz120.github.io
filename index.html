@@ -196,7 +196,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-11-03 15:59:47" itemprop="dateModified" datetime="2021-11-03T15:59:47+08:00">2021-11-03</time>
+        <time title="Modified: 2021-11-03 16:05:54" itemprop="dateModified" datetime="2021-11-03T16:05:54+08:00">2021-11-03</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -242,7 +242,7 @@
 <h4 id="半Lambert漫反射模型"><a href="#半Lambert漫反射模型" class="headerlink" title="半Lambert漫反射模型"></a>半Lambert漫反射模型</h4><p>从上述公式可以看出，Lambert漫反射模型会让模型<strong>背向光源</strong>的一半完全呈现黑色（因为点积为负），因此出现了<strong>半Lambert模型</strong>，其计算也很简单，即把上述公式中的max()部分改变为：<br>$dot(normal, lightDir) * 0.5 + 0.5$<br>即<br>$C_{diffuse} = (dot(normal, lightDir) * 0.5 + 0.5) * C_{light} * I_{light}$<br>我们将两者的函数图像及实际效果作比较，可以看出半Lambert模型的结果会比前者拥有更多层次。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211102190412.png" alt=""></p>
 <hr>
 <h3 id="Blinn-Phong高光模型"><a href="#Blinn-Phong高光模型" class="headerlink" title="Blinn-Phong高光模型"></a>Blinn-Phong高光模型</h3><p>对于一些<strong>表面光滑</strong>的物体，除了漫反射，我们还需要高光反射，光线能够大部分经过法线而反射到我们的<strong>观察点（如相机）</strong>。<br>最基础的高光模型是<strong>Phong式</strong>算法，我们将<strong>入射光方向经过法线反射的方向</strong>与<strong>观察方向</strong>做点积，这样越接近恰好反射到观察点的表面位置，高光越强，如下图所示：<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211103005323.png" alt=""><br>但是这个方法当观察方向与入射光方向在<strong>法线同侧</strong>时，反射方向与观察方向的夹角将会<strong>大于90°</strong>，导致点积为负数，这样当相机转到某一个角度时，会出现高光突然消失的情况，这是我们不希望看到的，于是便有了<strong>Blinn-Phong高光模型</strong>。<br>在Phong式模型的基础上，我们计算了中间向量H，它是入射光方向与视线方向的平均，我们用<strong>向量H</strong>与<strong>法线N</strong>求点积，这样就保证了H和N的夹角永远不会大于90°，如下图所示：<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211103005019.png" alt=""></p>
-<p>如果直接求得点积，那么cos函数的变化会太过平滑，导致我们不希望看到的<strong>高光面积过于大</strong>的情况，因此我们引入一个新的变量shininess，来对点积结果进行<strong>次幂</strong>操作，来缩小高光的面积。因此最终，我们能够得到高光的计算公式；<br>$C_{specular} = pow(max(0, dot(H, N)), shininess) <em> C_{light} </em> I_{light}$<br>计算完高光后，我们可以得到如下的效果：<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211103010652.png" alt=""><br>可以看到随着角度、和shininess的变化，高光的强度和范围都会发生相应的变化。</p>
+<p>如果直接求得点积，那么cos函数的变化会太过平滑，导致我们不希望看到的<strong>高光面积过于大</strong>的情况，因此我们引入一个新的变量shininess，来对点积结果进行<strong>次幂</strong>操作，来缩小高光的面积。因此最终，我们能够得到高光的计算公式；<br>$C_{specular} = pow(max(0, dot(H, N)), shininess) · C_{light} · I_{light}$<br>计算完高光后，我们可以得到如下的效果：<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211103010652.png" alt=""><br>可以看到随着角度、和shininess的变化，高光的强度和范围都会发生相应的变化。</p>
 <hr>
 <h4 id="结果合并"><a href="#结果合并" class="headerlink" title="结果合并"></a>结果合并</h4><p>在得到了<strong>漫反射（Diffuse）</strong>和<strong>高光（Specular）</strong>之后，我们便可以将他们相加后乘以物体的固有色，得到基础光照的最终结果$C_{final}=C_{origin}·C_{light}·I_{light}·(P_{diffuse} + P_{specular})$</p>
 <p><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211103132335.png" alt=""></p>
