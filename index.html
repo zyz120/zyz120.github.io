@@ -116,7 +116,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-count">5</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -165,6 +165,146 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/11/14/FurRendering/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="名が無い生身">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="四次元">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/11/14/FurRendering/" class="post-title-link" itemprop="url">毛发渲染（Fur Rendering）</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-11-14 13:23:05" itemprop="dateCreated datePublished" datetime="2021-11-14T13:23:05+08:00">2021-11-14</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-11-15 19:06:59" itemprop="dateModified" datetime="2021-11-15T19:06:59+08:00">2021-11-15</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E5%90%91/" itemprop="url" rel="index"><span itemprop="name">技术向</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="毛发渲染（Fur-Rendering）"><a href="#毛发渲染（Fur-Rendering）" class="headerlink" title="毛发渲染（Fur Rendering）"></a>毛发渲染（Fur Rendering）</h1><p>在<strong>实时渲染</strong>中，毛发的渲染可以看作一个单独的课题，毛发因为其数量多的原因，如果为每根毛发单独建模或渲染，会给CPU和GPU都带来很大的压力。因此，我们采用一些tricks，让毛发<strong>看起来是真实的</strong>，并且在实时渲染中可以接受的性能消耗之内来完成。<br>由于毛发渲染的方法有很多，这篇文章介绍的是<strong>多pass方式的毛发渲染</strong>，又叫做<strong>shell-based rendering</strong>。参考自<a target="_blank" rel="noopener" href="https://xbdev.net/directx3dx/specialX/Fur/index.php">&#x1F4CC;bkenwright@xbdev.net的教程</a>。</p>
+<h2 id="毛发的特征"><a href="#毛发的特征" class="headerlink" title="毛发的特征"></a>毛发的特征</h2><p><strong>1、毛发数量众多、质地柔软</strong><br>毛发由数量众多的细小圆柱体组成，并且毛发通常是柔软的，互相交叉重叠在一起。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211114160228.png" alt=""></p>
+<center><font size=2 color=#AAAAAA>[互相交叠的柔软毛发]</font></center>
+
+<p><strong>2、毛发自身互相产生阴影</strong><br>毛发自身产生的阴影会投射到其他的毛发之上，由于毛发基本都是<strong>从根部到尖端由粗到细</strong>，因此越接近毛发的根部，阴影越强。在实时渲染中我们不会精确计算到毛发自身的投影，但是可以利用<strong>靠近根部的阴影强</strong>这一点来做一个模拟的AO。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211114161427.png" alt=""></p>
+<center><font size=2 color=#AAAAAA>[越靠近根部阴影越强]</font></center>
+
+<p><strong>3、毛发边缘透光、且颜色越淡透光越强</strong><br>在<strong>背光</strong>时，可以明显看出毛发的<strong>边缘部分</strong>能够<strong>透过一部分光线</strong>，并且毛发的<strong>颜色越浅，透光越强</strong>。在摄影中，逆光拍摄的时候可以明显看出这种现象。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211114162049.png" alt=""></p>
+<center><font size=2 color=#AAAAAA>[头发的边缘透光现象]</font></center>
+
+<p><strong>4、毛发的各向异性高光</strong><br>与一般物体不同，毛发的<strong>表面有许多凸起、凹痕等</strong>，这让毛发并没有一个明显区域的高光，与之相反，毛发的高光更偏向各个方向均有一部分。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211114162929.png" alt=""></p>
+<center><font size=2 color=#AAAAAA>[显微镜下的毛发 + 高光]</font></center>
+
+<p><strong>但是</strong><br>好在我们在<strong>实时渲染</strong>中可以效果较好、代价较低地模拟上述的毛发特征。这里引用《3D数学基础：图形与游戏开发（3D Math Primer For Graphics And Game Development）》中的“图形学第一定律”——</p>
+<p><strong>如果它看上去是对的，那么它就是对的（If it <em>looks</em> right, it <em>is</em> right）</strong>。</p>
+<hr>
+<h2 id="毛发的渲染过程"><a href="#毛发的渲染过程" class="headerlink" title="毛发的渲染过程"></a>毛发的渲染过程</h2><h3 id="多Pass渲染"><a href="#多Pass渲染" class="headerlink" title="多Pass渲染"></a>多Pass渲染</h3><p>本文中我们采用<strong>多pass渲染</strong>的方式来渲染毛发，即用多个pass，每个pass渲染<strong>一层</strong>，让多层叠加在一起产生毛发的效果。在每一层中，我们均将<strong>顶点</strong>沿<strong>法线方向挤出</strong>一小段距离，这样在多个pass的执行下，我们便得到了<strong>大量的层</strong>，每一层都是上一层沿法线方向的放大。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211114174850.png" alt=""></p>
+<center><font size=2 color=#AAAAAA>[沿法线挤出的多层示意]</font></center>
+
+<p>通常，我们沿法线挤出后，所形成的新的层仍然是<strong>一个整体</strong>（即如果我们把一个平面挤出一次后，所得到的层仍然是一个平面），那按理说我们得到的仅仅是重叠在一起的多个层，并非是毛发。为了让这些层看起来像毛发，我们可以使用<strong>沃里噪声（Worley Noise）贴图</strong>，每层对其进行采样，<strong>采样值作为alpha逐层递减</strong>，由于沃里噪声形状的特性，我们便可以在每个pass中得到一系列逐层变细的面片，当<strong>层数足够多</strong>时，看上去就和毛发一样。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211114180747.png" alt=""></p>
+<center><font size=2 color=#AAAAAA>[沃里噪声]</font></center>
+
+<p>以下是多pass渲染的一段简单结构示意：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">SubShader</span><br><span class="line">&#123;</span><br><span class="line">	Tags &#123; <span class="string">&quot;RenderType&quot;</span>=<span class="string">&quot;Transparent&quot;</span> <span class="string">&quot;Queue&quot;</span>=<span class="string">&quot;Transparent&quot;</span> &#125;</span><br><span class="line">	Blend SrcAlpha OneMinusSrcAlpha</span><br><span class="line">	</span><br><span class="line">	Pass</span><br><span class="line">	&#123;</span><br><span class="line">		CGPROGRAM</span><br><span class="line">		</span><br><span class="line">		<span class="meta">#<span class="meta-keyword">pragma</span> vertex vert</span></span><br><span class="line">		<span class="meta">#<span class="meta-keyword">pragma</span> fragment frag</span></span><br><span class="line">		</span><br><span class="line">		v2f <span class="built_in">vert</span>(a2v v) &#123; <span class="keyword">return</span> <span class="built_in">Vert_fur</span>(v, FUR_OFFSET); &#125;</span><br><span class="line">		<span class="function">fixed4 <span class="title">frag</span><span class="params">(v2f i)</span> : SV_Target &#123;</span> <span class="keyword">return</span> <span class="built_in">Frag_fur</span>(i); &#125;</span><br><span class="line">		</span><br><span class="line">		ENDCG</span><br><span class="line">	&#125;	</span><br><span class="line">	Pass &#123;...&#125;	</span><br><span class="line">	Pass &#123;...&#125;	</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>其中的<strong>FUR_OFFSET</strong>为层高，即我们每层挤出的距离，FUR_OFFSET的间隔越大，毛发越长，但是每一层的区别也看得更明显，更容易穿帮。因此<strong>总层数与层高</strong>需要在效果与性能之间通过调试来做取舍。</p>
+<hr>
+<h3 id="第一步：法线挤出与噪声采样"><a href="#第一步：法线挤出与噪声采样" class="headerlink" title="第一步：法线挤出与噪声采样"></a>第一步：法线挤出与噪声采样</h3><p>具体原理在上述<strong>多pass渲染</strong>节已经说明完毕，我们按照其方法来做毛发渲染的第一步——<strong>法线挤出和噪声采样</strong>。<br>首先，在<strong>顶点着色器</strong>中，我们将<strong>每个顶点沿法线挤出</strong>，并计算<strong>主纹理和沃里噪声的tilling和offset</strong>，代码如下<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">v.vertex.xyz += v.normal * FUR_OFFSET * _FurLength;</span><br><span class="line"></span><br><span class="line">o.uv.xy = v.uv * _MainTex_ST.xy + _MainTex_ST.zw;</span><br><span class="line">o.uv.zw = v.uv * _NoiseTex_ST.xy + _NoiseTex_ST.zw;</span><br></pre></td></tr></table></figure><br>在<strong>片元着色器</strong>中，我们<strong>采样沃里噪声</strong>，并根据FUR_OFFSET的值来让alpha逐层缩小，代码如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">float</span> alphaOrigin = <span class="built_in">tex2D</span>(_NoiseTex, i.uv.zw).r;</span><br><span class="line"><span class="keyword">float</span> alpha = <span class="built_in">clamp</span>(alphaOrigin - FUR_OFFSET, <span class="number">0.0</span>, <span class="number">1.0</span>);</span><br></pre></td></tr></table></figure></p>
+<p>至此，我们已经得到了沿法线挤出的多层，并且沃里噪声采样的alpha值逐层递减，目前我们得到的“毛发”效果如下：<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211114184158.png" alt=""></p>
+<p>可见效果非常不尽如人意，中间部分几乎看不清，考虑到开头提到的<strong>毛发特征第二点</strong>，我们先来为其加上AO。</p>
+<hr>
+<h3 id="第二步：毛发的自投影（AO）"><a href="#第二步：毛发的自投影（AO）" class="headerlink" title="第二步：毛发的自投影（AO）"></a>第二步：毛发的自投影（AO）</h3><p>因为我们<strong>每一层（每一pass）</strong>均有一个FUR_OFFSET变量，所以我们想计算AO会变得非常方便。试想，毛发越接近根部，其阴影越强，因此我们只需要让根部的光线作用效果减弱即可，而FUR_OFFSET又恰好是从根部到尖端<strong>由小到大</strong>，我们便可以轻松计算如下。<br>在<strong>顶点着色器中</strong>，我们增加了<strong>__AO参数</strong>，用来调整阴影效果，其代码如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">half ao = <span class="built_in">pow</span>(FUR_OFFSET, _AO) + <span class="number">0.04</span>;</span><br></pre></td></tr></table></figure><br>我们将结果传入<strong>片段着色器</strong>，并用结果乘以该值如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">result *= aoVal;</span><br></pre></td></tr></table></figure></p>
+<p>至此，我们用<strong>模拟的AO</strong>给毛发加入了自投影，得到的“毛发”效果如下：<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211114185242.png" alt=""></p>
+<p>可见仅通过简单的AO计算，我们已经能够将<strong>毛发的阴影</strong>效果表现出来了，但是可以发现，我们的毛发现在均沿着法线向外，看起来像“刺猬”，并不符合<strong>毛发的特征一</strong>，即并不柔软，因此我们接下来需要让毛发变得更加柔软。</p>
+<hr>
+<h3 id="第三步：得到柔软的毛发"><a href="#第三步：得到柔软的毛发" class="headerlink" title="第三步：得到柔软的毛发"></a>第三步：得到柔软的毛发</h3><p>为了让我们的毛发看起来不像“刺猬”，我们需要让毛发<strong>变软</strong>，这里我们通过<strong>UV偏移</strong>的方式来实现这一效果。<br>我们根据FUR_OFFSET，来对<strong>采样沃里噪声时的UV</strong>进行逐层偏移，相当于我们每一层采样时都相比上一层进行了一小段偏移，这样最终我们得到的毛发就会是弯曲的，也就达到了我们想要的<strong>柔软</strong>的效果。<br>为了方便调整效果，我定义了向量<strong>__UVOffset</strong>变量，其xy分量来对UV进行偏移，其z分量用来调整FUR_OFFSET带来的影响，公式如下：<br>$uvOffset = UVOffset.xy · FUROFFSET^{UVOffset.z} $<br>于是，我们在<strong>顶点着色器</strong>中，有：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">float2 uvOffset = _UVOffset.xy * <span class="built_in">pow</span>(FUR_OFFSET, _UVOffset.z) * <span class="number">0.1</span>;</span><br><span class="line">o.uv.zw = v.uv * _NoiseTex_ST.xy + _NoiseTex_ST.zw + uvOffset;  </span><br></pre></td></tr></table></figure>
+<p>至此，我们给毛发加入了UV偏移，得到了<strong>逐层弯曲</strong>的毛发，并且能够通过一个变量调整效果，结果如下：<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/Fur_3.gif" alt=""></p>
+<p>目前，我们已经得到了毛发的<strong>几何形态</strong>，接下来，我们需要让光照对我们的毛发产生影响，以此来实现开头提到的<strong>毛发特征3~4</strong>，在光照上，首先我们从最经典最基础的<strong>漫反射</strong>开始。</p>
+<hr>
+<h3 id="第四步：光照——漫反射"><a href="#第四步：光照——漫反射" class="headerlink" title="第四步：光照——漫反射"></a>第四步：光照——漫反射</h3><p>漫反射仍然采用经典的<strong>Lambert算法</strong>，用<strong>法线和入射光方向的点乘</strong>作为漫反射的结果，这里我们对结果加上一个变量<strong>LightFilter</strong>，用来调整光的穿透程度，代码实现如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">float</span> NdotL = <span class="built_in">dot</span>(worldNormal, worldLightDir);</span><br><span class="line"><span class="keyword">float</span> diff = <span class="built_in">saturate</span>(NdotL + LightFilter);</span><br></pre></td></tr></table></figure><br>事实上，当我们将上述结果直接用作漫反射结果时，得到的效果是很差的，因为其破坏了<strong>毛发尖端阴影更少，亮度更强</strong>的原则。<br>因此，这里我们正好可以利用FUR_OFFSET变量来改善这一结果，因为NdotL的<strong>结果范围是(-1, 1)</strong>，所以我们加上<strong>范围为(0, 1)的FUR_OFFSET</strong>后，就得到了<strong>范围在(0, 2)的结果</strong>，我们用saturate来将结果限制在(0, 1)即可得到优化后的结果。代码实现如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">float</span> NdotL = <span class="built_in">dot</span>(worldNormal, worldLightDir);</span><br><span class="line"><span class="keyword">float</span> diff = <span class="built_in">saturate</span>(NdotL + LightFilter + FUR_OFFSET);</span><br></pre></td></tr></table></figure><br>最终我们能够得到如下的结果（图中分别对比了加与不加FUR_OFFSET的效果），注意，这里展示的效果仅仅是将<strong>diff的数值可视化</strong>：<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211115011055.png" alt=""></p>
+<center><font size=2 color=#AAAAAA>[ 无FUR_OFFSET vs 加入FUR_OFFSET ]</font></center>
+
+<p>在有了漫反射后，我们已经完成了光照的第一步，接下来我们来完成开篇所说的<strong>毛发特征第三点</strong>，这可以让毛发边缘能够透过一部分光线从而显得<strong>亮度更高</strong>。</p>
+<hr>
+<h3 id="第五步：光照——边缘透光"><a href="#第五步：光照——边缘透光" class="headerlink" title="第五步：光照——边缘透光"></a>第五步：光照——边缘透光</h3><p>为了使边缘能够透光，即让光线只影响物体边缘，那么自然想到的就是<strong>菲涅尔反射</strong>。关于菲涅尔反射的计算公式有很多，这里我使用了下面的公式：<br>$Fresnal = max(0, min(1, (FresScale) + (1 - FresScale) · (1 - dot(ViewDir, normal)^{FresPower}  )))$<br>这里可以根据效果多尝试几种方法，都是没问题的。<br>在代码实现时，我们引入两个变量<strong><strong>FresnelScale和</strong>FresnelPower</strong>来帮助我们调整效果，具体实现如下，在<strong>顶点着色器</strong>中：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">half fresnel = <span class="number">1</span> - _FresnelScale + _FresnelScale * <span class="built_in">pow</span>(<span class="number">1</span> - <span class="built_in">dot</span>(worldNormal, worldView), _FresnelPower);</span><br><span class="line">fresnel = <span class="built_in">max</span>(<span class="number">0</span>, <span class="built_in">min</span>(<span class="number">1</span>, fresnel));</span><br></pre></td></tr></table></figure><br>在<strong>片元着色器</strong>中，我将结果加上了AO和FUR_OFFSET的影响，可以让边缘部分的亮度稍高一些，此外，还加入了<strong>__FresnelColor</strong>来调整透光部分的颜色，具体如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">float</span> fresnelVal = i.extraParam.w + aoVal * FUR_OFFSET * <span class="number">0.1</span>;</span><br><span class="line">result += fresnelVal * _FresnelColor;</span><br></pre></td></tr></table></figure><br>最终我们得到的结果如下，左右分别是有无AO和FUR_OFFSET的区别，注意，这里的效果仅仅是将<strong>fresnel值可视化</strong>的结果：<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211115145622.png" alt=""></p>
+<center><font size=2 color=#AAAAAA>[ 无AO/FUR_OFFSET vs 加入AO/FUR_OFFSET ]</font></center>
+
+<p>拥有边缘光之后，我们已经完成了开头介绍的<strong>毛发特征三</strong>，接下来我们来完成最后的<strong>特征四</strong>，即<strong>各向异性高光</strong>。</p>
+<hr>
+<h3 id="第六步：光照——各向异性高光"><a href="#第六步：光照——各向异性高光" class="headerlink" title="第六步：光照——各向异性高光"></a>第六步：光照——各向异性高光</h3><p>与一般的高光不同，我们在计算<strong>毛发类</strong>的高光时采用<strong>各向异性高光</strong>，Blinn-Phong高光模型中我们使用了<strong>法线</strong>与向量H进行点乘计算（注：向量H指<strong>视角方向与入射光方向的中间向量</strong>），而在各向异性高光计算的时候，我们采用<strong>切线方向来代替法线</strong>进行计算，如下图<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211115182050.png" alt=""><br>不难想象，对于圆柱体而言，其切线方向是不变的，均沿着毛发生长方向。值得一提的是，在图形学中，不同于<strong>唯一的法线</strong>，切线一般是由<strong>物体的UV方向</strong>来定义的，因此有些引擎中我们用来计算各向异性高光时不一定使用切线，而也有可能使用<strong>副切线</strong>进行计算，其中副切线可以由<strong>法线与切线的叉乘</strong>来求得。<br>有了我们所需要的数据之后，我们便可以将数据代入公式计算，这里我使用的是<strong>Kajiya-kay模型</strong>，其公式如下<br>$StrandSpecular = (\sqrt{1 - dot(Tangent, H)^2})^{exponent}$<br>其中<br>$H = normalize(ViewDir + LightDir)$<br>代码实现如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">float</span> <span class="title">StrandSpec</span><span class="params">(float3 T, float3 L, float3 V, <span class="keyword">float</span> exponet)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    float3 H = <span class="built_in">normalize</span>(L + V);</span><br><span class="line">    <span class="keyword">float</span> TdotH = <span class="built_in">dot</span>(T, H);</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">pow</span>(<span class="built_in">sqrt</span>(<span class="number">1</span> - TdotH * TdotH), exponet);    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们将<strong>高光计算结果可视化</strong>，便能够得到如下的结果，这一结果就是模拟了动漫中常见的<strong>头发</strong>上的<strong>天使环高光</strong>：<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211115183319.png" alt=""><br>注意，为了<strong>性能考虑</strong>，我们在毛发渲染的所有光照计算均在<strong>顶点着色器</strong>中完成，因此我们能在高光上看到明显的<strong>几何形状</strong>，并且毛发根部也被完整照亮了，这不是我们想要的效果，因此我们对该高光结果<strong>乘以FUR_OFFSET</strong>来弱化毛发根部的亮度，除此之外，我还加入了<strong>__StrandParam</strong>参数来方便调整高光效果，代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Properties</span><br><span class="line">&#123;</span><br><span class="line">	...</span><br><span class="line">	_StrandParam (<span class="string">&quot;高光参数：X-环区域，Y-高光亮度&quot;</span>, Vector) = (<span class="number">25.0</span>, <span class="number">1.0</span>, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">half strandSpec = <span class="built_in">StrandSpec</span>(worldBiTan, worldLight, worldView, _StrandParam.x) * FUR_OFFSET * _StrandParam.y;</span><br></pre></td></tr></table></figure>
+<p>最终我们得到了如下结果（左图是我用<strong>Blinn-Phong高光模型</strong>的计算结果，可以明显看出其与<strong>各向异性高光</strong>的差别）：<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211115184104.png" alt=""></p>
+<center><font size=2 color=#AAAAAA>[BlinnPhong vs 各向异性 ]</font></center>
+
+<hr>
+<h3 id="第七步——合并所有效果"><a href="#第七步——合并所有效果" class="headerlink" title="第七步——合并所有效果"></a>第七步——合并所有效果</h3><p>最后，我们把上面的效果全部合并，得到最终的毛发渲染结果。</p>
+<p>首先，我们对纹理采样，获得物体<strong>固有色</strong>，并对得到的<strong>固有色与毛发颜色进行插值</strong>，得到一个基础的着色。<br>然后我们在该着色的基础上，加入漫反射与高光反射的影响，并且这里的<strong>高光</strong>我乘上了<strong>漫反射</strong>的结果，这是为了不让背光处出现天使环高光。<br>在上述光照的基础上，我们再加上<strong>边缘光</strong>，并且这里我为边缘光设定了一个可选颜色，让该颜色影响边缘光颜色。<br>最后，我们把结果乘以AO值，来加入<strong>自投影</strong>带来的阴影。<br>完整代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 采样+插值</span></span><br><span class="line">fixed3 baseCol = <span class="built_in">tex2D</span>(_MainTex, i.uv.xy).rgb;</span><br><span class="line">baseCol = <span class="built_in">lerp</span>(baseCol, _BaseColor, FUR_OFFSET * FUR_OFFSET);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 光照</span></span><br><span class="line">fixed3 result = (diff + diff * strandSpec) * baseCol * _LightColor0.rgb;</span><br><span class="line">result += fresnelVal * _FresnelColor;</span><br><span class="line"></span><br><span class="line"><span class="comment">// AO</span></span><br><span class="line">result *= aoVal;</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> <span class="built_in">fixed4</span>(result.rgb, alpha);</span><br></pre></td></tr></table></figure>
+<p>在将所有的计算结果合并后，我们就能得到毛发渲染的最终效果。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211115190407.png" alt=""></p>
+<p>至此，我们完成了<strong>多pass方式的毛发渲染</strong>，但是该结果仍然有许多需要调整和优化的地方，譬如<strong>不同物体间毛发的穿插</strong>、<strong>毛发的动态</strong>等。</p>
+<hr>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/11/10/GamePsycho/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -196,7 +336,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-11-12 00:20:59" itemprop="dateModified" datetime="2021-11-12T00:20:59+08:00">2021-11-12</time>
+        <time title="Modified: 2021-11-12 00:25:27" itemprop="dateModified" datetime="2021-11-12T00:25:27+08:00">2021-11-12</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -238,7 +378,7 @@
 <h2 id="被注视的力量（Power-of-being-watched）"><a href="#被注视的力量（Power-of-being-watched）" class="headerlink" title="被注视的力量（Power of being watched）"></a>被注视的力量（Power of being watched）</h2><p>在电子游戏中，“眼睛”常常被当作<strong>危险</strong>的信号，在极大多数有<strong>眼睛</strong>或者<strong>被注视感</strong>的场合中，往往会给人们带来恐惧、紧张的感觉。当设计者在暗示场景中潜伏着危险，或是在进行某些敌人形象的设计时，眼睛常常会成为一个重要参考，并且通常<strong>眼睛</strong>也会成为敌人的<strong>弱点</strong>之一，如下图。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211111221746.png" alt=""></p>
 <p>人类学家克洛德·列维·斯特劳斯（Claude Levi-Strauss）认为，人们对<strong>面具、小丑</strong>等感到<strong>恐惧</strong>的原因是它阻断了人与人之间的表情交流。当人们<strong>被注视</strong>的时候，在来源不明的眼睛形象上无法推测出对方的意图，这会触发人们的自我保护，倾向性地认为对方的意图是对自己<strong>有害的</strong>。<br>如下图，面具让我们无法根据面具后面的人的表情等判断其意图，让人们产生恐惧的感觉。当然，其中也包括由面具形象带来的<strong>恐怖谷（Uncanny Valley）</strong>效应，我打算把这一点放在另一篇恐怖相关的作品分析中讲述。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211111224041.png" alt=""></p>
 <p>除了被<strong>不明意图</strong>的注视，还有另一种被注视的方式，即<strong>观众</strong>。James Geer的《恐惧调查表》中显示了人们除了死亡、未知、危险动物等之外，<strong>社交、演讲、出丑</strong>等行为也在其列。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211111233003.png" alt=""></p>
-<p>人们发现，<strong>观众</strong>的存在会影响一个人的表现，譬如在别人的注视下完成一项工作的时候，有些人会表现出<strong>不愿意</strong>等<strong>负面</strong>情绪，并且其完成质量、效率等都会明显下降。对应到电子游戏中，如<strong>周围NPC的反馈、团队竞技中队友的关注、线下观众的围观</strong>等，会明显地影响玩家的思考能力以及发挥水准。但同时，也有一部分人在拥有观众的时候，会表现得比平时<strong>更出色</strong>。<br>通常，在人们<strong>水平不足</strong>时，注视会让他们<strong>发挥失常</strong>；而在<strong>水平较高</strong>时，注视能让他们<strong>更加出色</strong>。譬如，<strong>宝可梦剑盾</strong>中的道馆设计，周围观众的气氛能让玩家感觉自己的发挥比平时更加出色。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211111235119.png" alt=""></p>
+<p>人们发现，<strong>观众</strong>的存在会影响一个人的表现，譬如在别人的注视下完成一项工作的时候，有些人会表现出<strong>不愿意</strong>等<strong>负面</strong>情绪，并且其完成质量、效率等都会明显下降。对应到电子游戏中，如<strong>周围NPC的反馈、团队竞技中队友的关注、线下观众的围观</strong>等，会明显地影响玩家的思考能力以及发挥水准。但同时，也有一部分人在拥有观众的时候，会表现得比平时<strong>更出色</strong>。<br>通常，在人们<strong>水平不足</strong>时，注视会让他们<strong>发挥失常</strong>；而在<strong>水平较高</strong>时，注视能让他们<strong>更加出色</strong>。譬如，<strong>《宝可梦剑盾》</strong>中的道馆设计，周围观众的气氛能让玩家感觉自己的发挥比平时更加出色。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20211111235119.png" alt=""></p>
 <p>由此<strong>对设计者的启发</strong>是，当我们需要让玩家感到<strong>紧张焦虑</strong>时，我们可以在游戏<strong>初期</strong>，玩家<strong>技巧不成熟</strong>时加入<strong>观众</strong>；当我们需要让玩家感到<strong>自信、火热</strong>时，我们可以在玩家技巧已经<strong>成熟后</strong>加入<strong>观众</strong>；当我们需要营造<strong>恐惧、不适、危险</strong>等氛围时，我们可以加入<strong>视线来源不明</strong>的注视。</p>
 <hr>
 <h2 id="TODO"><a href="#TODO" class="headerlink" title="TODO"></a>TODO</h2><p>TODO</p>
@@ -299,7 +439,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-11-03 16:05:54" itemprop="dateModified" datetime="2021-11-03T16:05:54+08:00">2021-11-03</time>
+        <time title="Modified: 2021-11-14 13:27:30" itemprop="dateModified" datetime="2021-11-14T13:27:30+08:00">2021-11-14</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -415,7 +555,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-11-02 14:52:15" itemprop="dateModified" datetime="2021-11-02T14:52:15+08:00">2021-11-02</time>
+        <time title="Modified: 2021-11-14 13:27:21" itemprop="dateModified" datetime="2021-11-14T13:27:21+08:00">2021-11-14</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
