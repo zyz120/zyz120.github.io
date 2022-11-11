@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="Intensity Shootingの開発記録（The Develop Log）　以前からローグライクゲームが好きで、今回は自分でローグライクのシューティングゲームを開発したいと思って、この文章を開発過程として記録する。　Unity2021を用いて、ゼロから作り方と問題を記録し、以降何かの問題がある時参考になったら幸運だと思う。  　2022&#x2F;11&#x2F;02　最新の機能を使用するため、URPのレンダ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Intensity Shootingの開発記録">
+<meta property="og:url" content="http://example.com/2022/11/11/IntensifyShooting_DevelopLog/index.html">
+<meta property="og:site_name" content="四次元">
+<meta property="og:description" content="Intensity Shootingの開発記録（The Develop Log）　以前からローグライクゲームが好きで、今回は自分でローグライクのシューティングゲームを開発したいと思って、この文章を開発過程として記録する。　Unity2021を用いて、ゼロから作り方と問題を記録し、以降何かの問題がある時参考になったら幸運だと思う。  　2022&#x2F;11&#x2F;02　最新の機能を使用するため、URPのレンダ">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111152726.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111153014.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111152902.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111154750.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111154812.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111154818.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/Rec2.gif">
+<meta property="og:image" content="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111160435.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111160627.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111160749.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111161038.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111161205.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111171936.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111172140.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111172553.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/Rec3.gif">
+<meta property="og:image" content="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/Rec4.gif">
+<meta property="og:image" content="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/Rec5.gif">
+<meta property="og:image" content="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111181846.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/Rec6.gif">
+<meta property="article:published_time" content="2022-11-11T05:50:02.000Z">
+<meta property="article:modified_time" content="2022-11-11T09:52:05.926Z">
+<meta property="article:author" content="名が無い生身">
+<meta property="article:tag" content="游戏">
+<meta property="article:tag" content="开发">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111152726.png">
+
+
+<link rel="canonical" href="http://example.com/2022/11/11/IntensifyShooting_DevelopLog/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2022/11/11/IntensifyShooting_DevelopLog/","path":"2022/11/11/IntensifyShooting_DevelopLog/","title":"Intensity Shootingの開発記録"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Intensity Shootingの開発記録 | 四次元</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">四次元</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">たましいホーム</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Intensity-Shooting%E3%81%AE%E9%96%8B%E7%99%BA%E8%A8%98%E9%8C%B2%EF%BC%88The-Develop-Log%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">　Intensity Shootingの開発記録（The Develop Log）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2022-11-02"><span class="nav-number">1.0.1.</span> <span class="nav-text">　2022&#x2F;11&#x2F;02</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2022-11-03"><span class="nav-number">1.0.2.</span> <span class="nav-text">　2022&#x2F;11&#x2F;03</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2022-11-04"><span class="nav-number">1.0.3.</span> <span class="nav-text">2022&#x2F;11&#x2F;04</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2022-11-05"><span class="nav-number">1.0.4.</span> <span class="nav-text">2022&#x2F;11&#x2F;05</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2022-11-06"><span class="nav-number">1.0.5.</span> <span class="nav-text">2022&#x2F;11&#x2F;06</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-number">1.1.</span> <span class="nav-text">　</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2022-11-07"><span class="nav-number">1.1.1.</span> <span class="nav-text">2022&#x2F;11&#x2F;07</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2022-11-09"><span class="nav-number">1.1.2.</span> <span class="nav-text">2022&#x2F;11&#x2F;09</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#-1"><span class="nav-number">1.1.3.</span> <span class="nav-text"> </span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">名が無い生身</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/11/11/IntensifyShooting_DevelopLog/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="名が無い生身">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="四次元">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Intensity Shootingの開発記録
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2022-11-11 14:50:02 / Modified: 18:52:05" itemprop="dateCreated datePublished" datetime="2022-11-11T14:50:02+09:00">2022-11-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E5%90%91/" itemprop="url" rel="index"><span itemprop="name">技术向</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="Intensity-Shootingの開発記録（The-Develop-Log）"><a href="#Intensity-Shootingの開発記録（The-Develop-Log）" class="headerlink" title="　Intensity Shootingの開発記録（The Develop Log）"></a>　Intensity Shootingの開発記録（The Develop Log）</h1><p>　以前からローグライクゲームが好きで、今回は自分でローグライクのシューティングゲームを開発したいと思って、この文章を開発過程として記録する。<br>　Unity2021を用いて、ゼロから作り方と問題を記録し、以降何かの問題がある時参考になったら幸運だと思う。</p>
+<hr>
+<h3 id="2022-11-02"><a href="#2022-11-02" class="headerlink" title="　2022/11/02"></a>　2022/11/02</h3><p>　最新の機能を使用するため、URPのレンダーパイプラインを選択した。<br>　<br>　2Dゲームだから、私はTileを使ってゲームマップを作ると決めた。まずはアセットストアで無料の素材をダウンロードし、<strong>TilePattle</strong>を作成する。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111152726.png" alt=""><br>　<strong>Rectangular Tilemap</strong>をクリエートし、マップを作成する。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111153014.png" alt=""><br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111152902.png" alt=""><br>　Tilemapのコライダーは、TilemapCollider2Dを使って形成することで、最初はTileAssetずつコライダーが分離されているが、<strong>「Used By Composite」をオンにして、CompositeCollider2Dを添付する</strong>と、一つのコライダーになることが可能だ。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111154750.png" alt=""><br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111154812.png" alt=""><br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111154818.png" alt=""><br>　マップの背景は四つのレイヤーで作られたもので、<strong>カメラにスクリプトを付け</strong>、カメラの動きと共に、レイヤー１つずつ移動する距離が違い、シーンのパースペクティブな感じを作る。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/Rec2.gif" alt=""></p>
+<center><font size=2 color=#AAAAAA>[パースペクティブなシーン]</font></center>
+
+<hr>
+<h3 id="2022-11-03"><a href="#2022-11-03" class="headerlink" title="　2022/11/03"></a>　2022/11/03</h3><p>　今日は主人公の絵を描く予定だ。<br>　アセットストアでダウンロードしたアセットは主に<strong>ピクセルスタイル</strong>だから、主人公も同じスタイルで描かれると考える。そのため、私はAsepriteを使って完成した。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111160435.png" alt=""><br>　主人公の基本的な感じが決まった後、<strong>idleとrunningの動画キーフレーム</strong>を完成した。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111160627.png" alt=""><br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111160749.png" alt=""><br>　その上、シューティングゲームだから、主人公の武器として、少し<strong>ハイテク感</strong>のある銃を描いた。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111161038.png" alt=""><br>　そしてUnityに導入し、Animatorに整理した。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111161205.png" alt=""></p>
+<hr>
+<h3 id="2022-11-04"><a href="#2022-11-04" class="headerlink" title="2022/11/04"></a>2022/11/04</h3><p>　今日は主人公の<strong>移動とジャンプ</strong>をコントロールするスクリプトを開発する。<br>　まずは移動で、単にプレーヤーの押しているボタンをチェックし、移動方向を決め、現在のポジションに相応の<strong>距離を加える</strong>だけだ。<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">void UpdateMove()</span><br><span class="line">&#123;</span><br><span class="line">    int moveDir = GetMoveDir();</span><br><span class="line"></span><br><span class="line">    this.transform.localPosition += new Vector3(moveDir * Time.deltaTime * this.MoveSpeed, 0, 0);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>　次はジャンプで、一つ目のステップは<strong>毎フレームでプレーヤーが地面にいるかどうかをチェックし</strong>、状態をアップデートする。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111171936.png" alt=""><br>　そして、CanJump()というファンクションを使って、主人公がジャンプできるかどうかを確認する。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111172140.png" alt=""><br>　最後、RigidBody2Dにフォースをあげて、ジャンプさせる。ちなみに、DoJump()のはじめる所に、<strong>小さなY軸の距離を与える</strong>のは、その次のフレームに、上のCanJump()にチェックされないようにするから。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111172553.png" alt=""></p>
+<hr>
+<h3 id="2022-11-05"><a href="#2022-11-05" class="headerlink" title="2022/11/05"></a>2022/11/05</h3><p>　今日は<strong>銃の動画とカメラのマウスにフォローする効果</strong>を作った。<br>　まず、銃の動画は、銃の角度をマウスの位置によって変化することである。これは、マウスの位置と銃の位置を引き算し、ベクトルのYとXを<strong>逆三角関数のTanを使い、角度を計算すること</strong>により、実現する。ちなみに、その角度はラジアンだから、<strong>πで加算しないで、そのまま使うと、違う結果が出る</strong>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">double angle_PI = Math.Atan2((double)deltaPos.y , Mathf.Abs(deltaPos.x));</span><br><span class="line">float angle_Rate = (float)angle_PI / (2 * Mathf.PI) * 360.0f;</span><br><span class="line">this.transform.localRotation = Quaternion.Euler(0, 0, angle_Rate);</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/Rec3.gif" alt=""></p>
+<p>　次は、カメラがマウスの位置にフォローする効果を作る。これは、プレーヤーの<strong>視野を広げ、より良い体験を与える</strong>ため作った機能である。<br>　実現する方法はたくさんあるから、ここは表示しないで、直接に結果を展示する。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/Rec4.gif" alt=""></p>
+<hr>
+<h3 id="2022-11-06"><a href="#2022-11-06" class="headerlink" title="2022/11/06"></a>2022/11/06</h3><p>　今日は銃の発砲する機能を作った。<br>　「発砲」という行為を面白くするため、弾丸が壁にぶつかる時、小さな光とパーティクルシステムを加えた。その上、今後の武器を強化する可能性を開くため、弾丸が壁にぶつかる時跳ね返る機能も追加する。<br>　次は実際の効果である。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/Rec5.gif" alt=""></p>
+<h2 id=""><a href="#" class="headerlink" title="　"></a>　</h2><h3 id="2022-11-07"><a href="#2022-11-07" class="headerlink" title="2022/11/07"></a>2022/11/07</h3><p>　今日は敵の怪物と主人公の攻撃される効果を作った。<br>　攻撃が命中することを表現するため、攻撃させる対象のSpriteにブリンクの効果を与える。これを実現するため、私はURPのSprite Lit Shader Graphを使った。一つのシェーダーグラフにブリンク（Blink）とディゾルブ（Dissolve）の効果が実現させる。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111181846.png" alt=""><br>　そして、怪物にHPを計算するスクリプトを付け、HPが0になったら死亡する。怪物が死亡する時、上記のディゾルブ効果を使う。<br>　以下は全部の効果である。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/Rec6.gif" alt=""></p>
+<hr>
+<h3 id="2022-11-09"><a href="#2022-11-09" class="headerlink" title="2022/11/09"></a>2022/11/09</h3><h3 id="-1"><a href="#-1" class="headerlink" title=" "></a> </h3>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B8%B8%E6%88%8F/" rel="tag"># 游戏</a>
+              <a href="/tags/%E5%BC%80%E5%8F%91/" rel="tag"># 开发</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/09/13/Hexo_Site_Make_Method/" rel="prev" title="Hexoで個人サイトを搭載する方法">
+                  <i class="fa fa-chevron-left"></i> Hexoで個人サイトを搭載する方法
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">名が無い生身</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

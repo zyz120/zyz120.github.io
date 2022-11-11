@@ -116,7 +116,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">7</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -127,7 +127,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -156,6 +156,97 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/11/11/IntensifyShooting_DevelopLog/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="名が無い生身">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="四次元">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/11/11/IntensifyShooting_DevelopLog/" class="post-title-link" itemprop="url">Intensity Shootingの開発記録</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2022-11-11 14:50:02 / Modified: 18:52:05" itemprop="dateCreated datePublished" datetime="2022-11-11T14:50:02+09:00">2022-11-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E5%90%91/" itemprop="url" rel="index"><span itemprop="name">技术向</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="Intensity-Shootingの開発記録（The-Develop-Log）"><a href="#Intensity-Shootingの開発記録（The-Develop-Log）" class="headerlink" title="　Intensity Shootingの開発記録（The Develop Log）"></a>　Intensity Shootingの開発記録（The Develop Log）</h1><p>　以前からローグライクゲームが好きで、今回は自分でローグライクのシューティングゲームを開発したいと思って、この文章を開発過程として記録する。<br>　Unity2021を用いて、ゼロから作り方と問題を記録し、以降何かの問題がある時参考になったら幸運だと思う。</p>
+<hr>
+<h3 id="2022-11-02"><a href="#2022-11-02" class="headerlink" title="　2022/11/02"></a>　2022/11/02</h3><p>　最新の機能を使用するため、URPのレンダーパイプラインを選択した。<br>　<br>　2Dゲームだから、私はTileを使ってゲームマップを作ると決めた。まずはアセットストアで無料の素材をダウンロードし、<strong>TilePattle</strong>を作成する。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111152726.png" alt=""><br>　<strong>Rectangular Tilemap</strong>をクリエートし、マップを作成する。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111153014.png" alt=""><br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111152902.png" alt=""><br>　Tilemapのコライダーは、TilemapCollider2Dを使って形成することで、最初はTileAssetずつコライダーが分離されているが、<strong>「Used By Composite」をオンにして、CompositeCollider2Dを添付する</strong>と、一つのコライダーになることが可能だ。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111154750.png" alt=""><br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111154812.png" alt=""><br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111154818.png" alt=""><br>　マップの背景は四つのレイヤーで作られたもので、<strong>カメラにスクリプトを付け</strong>、カメラの動きと共に、レイヤー１つずつ移動する距離が違い、シーンのパースペクティブな感じを作る。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/Rec2.gif" alt=""></p>
+<center><font size=2 color=#AAAAAA>[パースペクティブなシーン]</font></center>
+
+<hr>
+<h3 id="2022-11-03"><a href="#2022-11-03" class="headerlink" title="　2022/11/03"></a>　2022/11/03</h3><p>　今日は主人公の絵を描く予定だ。<br>　アセットストアでダウンロードしたアセットは主に<strong>ピクセルスタイル</strong>だから、主人公も同じスタイルで描かれると考える。そのため、私はAsepriteを使って完成した。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111160435.png" alt=""><br>　主人公の基本的な感じが決まった後、<strong>idleとrunningの動画キーフレーム</strong>を完成した。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111160627.png" alt=""><br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111160749.png" alt=""><br>　その上、シューティングゲームだから、主人公の武器として、少し<strong>ハイテク感</strong>のある銃を描いた。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111161038.png" alt=""><br>　そしてUnityに導入し、Animatorに整理した。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111161205.png" alt=""></p>
+<hr>
+<h3 id="2022-11-04"><a href="#2022-11-04" class="headerlink" title="2022/11/04"></a>2022/11/04</h3><p>　今日は主人公の<strong>移動とジャンプ</strong>をコントロールするスクリプトを開発する。<br>　まずは移動で、単にプレーヤーの押しているボタンをチェックし、移動方向を決め、現在のポジションに相応の<strong>距離を加える</strong>だけだ。<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">void UpdateMove()</span><br><span class="line">&#123;</span><br><span class="line">    int moveDir = GetMoveDir();</span><br><span class="line"></span><br><span class="line">    this.transform.localPosition += new Vector3(moveDir * Time.deltaTime * this.MoveSpeed, 0, 0);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>　次はジャンプで、一つ目のステップは<strong>毎フレームでプレーヤーが地面にいるかどうかをチェックし</strong>、状態をアップデートする。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111171936.png" alt=""><br>　そして、CanJump()というファンクションを使って、主人公がジャンプできるかどうかを確認する。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111172140.png" alt=""><br>　最後、RigidBody2Dにフォースをあげて、ジャンプさせる。ちなみに、DoJump()のはじめる所に、<strong>小さなY軸の距離を与える</strong>のは、その次のフレームに、上のCanJump()にチェックされないようにするから。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111172553.png" alt=""></p>
+<hr>
+<h3 id="2022-11-05"><a href="#2022-11-05" class="headerlink" title="2022/11/05"></a>2022/11/05</h3><p>　今日は<strong>銃の動画とカメラのマウスにフォローする効果</strong>を作った。<br>　まず、銃の動画は、銃の角度をマウスの位置によって変化することである。これは、マウスの位置と銃の位置を引き算し、ベクトルのYとXを<strong>逆三角関数のTanを使い、角度を計算すること</strong>により、実現する。ちなみに、その角度はラジアンだから、<strong>πで加算しないで、そのまま使うと、違う結果が出る</strong>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">double angle_PI = Math.Atan2((double)deltaPos.y , Mathf.Abs(deltaPos.x));</span><br><span class="line">float angle_Rate = (float)angle_PI / (2 * Mathf.PI) * 360.0f;</span><br><span class="line">this.transform.localRotation = Quaternion.Euler(0, 0, angle_Rate);</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/Rec3.gif" alt=""></p>
+<p>　次は、カメラがマウスの位置にフォローする効果を作る。これは、プレーヤーの<strong>視野を広げ、より良い体験を与える</strong>ため作った機能である。<br>　実現する方法はたくさんあるから、ここは表示しないで、直接に結果を展示する。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/Rec4.gif" alt=""></p>
+<hr>
+<h3 id="2022-11-06"><a href="#2022-11-06" class="headerlink" title="2022/11/06"></a>2022/11/06</h3><p>　今日は銃の発砲する機能を作った。<br>　「発砲」という行為を面白くするため、弾丸が壁にぶつかる時、小さな光とパーティクルシステムを加えた。その上、今後の武器を強化する可能性を開くため、弾丸が壁にぶつかる時跳ね返る機能も追加する。<br>　次は実際の効果である。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/Rec5.gif" alt=""></p>
+<h2 id=""><a href="#" class="headerlink" title="　"></a>　</h2><h3 id="2022-11-07"><a href="#2022-11-07" class="headerlink" title="2022/11/07"></a>2022/11/07</h3><p>　今日は敵の怪物と主人公の攻撃される効果を作った。<br>　攻撃が命中することを表現するため、攻撃させる対象のSpriteにブリンクの効果を与える。これを実現するため、私はURPのSprite Lit Shader Graphを使った。一つのシェーダーグラフにブリンク（Blink）とディゾルブ（Dissolve）の効果が実現させる。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111181846.png" alt=""><br>　そして、怪物にHPを計算するスクリプトを付け、HPが0になったら死亡する。怪物が死亡する時、上記のディゾルブ効果を使う。<br>　以下は全部の効果である。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/Rec6.gif" alt=""></p>
+<hr>
+<h3 id="2022-11-09"><a href="#2022-11-09" class="headerlink" title="2022/11/09"></a>2022/11/09</h3><h3 id="-1"><a href="#-1" class="headerlink" title=" "></a> </h3>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
