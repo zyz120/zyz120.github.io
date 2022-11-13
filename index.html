@@ -196,7 +196,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2022-11-11 19:36:22" itemprop="dateModified" datetime="2022-11-11T19:36:22+09:00">2022-11-11</time>
+        <time title="Modified: 2022-11-13 19:08:18" itemprop="dateModified" datetime="2022-11-13T19:08:18+09:00">2022-11-13</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -233,10 +233,15 @@
 <p><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/Rec3.gif" alt=""></p>
 <p>　次は、カメラがマウスの位置にフォローする効果を作る。これは、プレーヤーの<strong>視野を広げ、より良い体験を与える</strong>ため作った機能である。<br>　実現する方法はたくさんあるから、ここは表示しないで、直接に結果を展示する。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/Rec4.gif" alt=""></p>
 <hr>
-<h3 id="2022-11-06"><a href="#2022-11-06" class="headerlink" title="2022/11/06"></a>2022/11/06</h3><p>　今日は銃の発砲する機能を作った。<br>　「発砲」という行為を面白くするため、弾丸が壁にぶつかる時、小さな光とパーティクルシステムを加えた。その上、今後の武器を強化する可能性を開くため、弾丸が壁にぶつかる時跳ね返る機能も追加する。<br>　次は実際の効果である。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/Rec5.gif" alt=""></p>
-<h2 id=""><a href="#" class="headerlink" title="　"></a>　</h2><h3 id="2022-11-07"><a href="#2022-11-07" class="headerlink" title="2022/11/07"></a>2022/11/07</h3><p>　今日は敵の怪物と主人公の攻撃される効果を作った。<br>　攻撃が命中することを表現するため、攻撃させる対象のSpriteにブリンクの効果を与える。これを実現するため、私はURPのSprite Lit Shader Graphを使った。一つのシェーダーグラフにブリンク（Blink）とディゾルブ（Dissolve）の効果が実現させる。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111181846.png" alt=""><br>　そして、怪物にHPを計算するスクリプトを付け、HPが0になったら死亡する。怪物が死亡する時、上記のディゾルブ効果を使う。<br>　以下は全部の効果である。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/Rec6.gif" alt=""></p>
+<h3 id="2022-11-06"><a href="#2022-11-06" class="headerlink" title="2022/11/06"></a>2022/11/06</h3><p>　今日は銃の発砲する機能を作った。<br>　「発砲」という行為を<strong>面白くする</strong>ため、弾丸が壁にぶつかる時、小さな<strong>光とパーティクルシステム</strong>を加えた。その上、今後の武器を強化する可能性を開くため、弾丸が壁にぶつかる時<strong>跳ね返る</strong>機能も追加する。<br>　次は実際の効果である。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/Rec5.gif" alt=""></p>
+<h2 id=""><a href="#" class="headerlink" title="　"></a>　</h2><h3 id="2022-11-07"><a href="#2022-11-07" class="headerlink" title="2022/11/07"></a>2022/11/07</h3><p>　今日は敵の怪物と主人公の攻撃される効果を作った。<br>　攻撃が命中することを表現するため、攻撃させる対象のSpriteにブリンクの効果を与える。これを実現するため、私は<strong>URPのSprite Lit Shader Graph</strong>を使った。一つのシェーダーグラフに<strong>ブリンク（Blink）とディゾルブ（Dissolve）</strong>の効果が実現させる。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221111181846.png" alt=""><br>　そして、怪物にHPを計算するスクリプトを付け、HPが0になったら<strong>死亡する</strong>。怪物が死亡する時、上記のディゾルブ効果を使う。<br>　以下は全部の効果である。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/Rec6.gif" alt=""></p>
 <hr>
-<h3 id="2022-11-09"><a href="#2022-11-09" class="headerlink" title="2022/11/09"></a>2022/11/09</h3><h3 id="-1"><a href="#-1" class="headerlink" title=" "></a> </h3>
+<h3 id="2022-11-09"><a href="#2022-11-09" class="headerlink" title="2022/11/09"></a>2022/11/09</h3><p>　今日は怪物の攻撃を作った。<br>　私は戦闘の時、<strong>賑やかな</strong>場面を作りたいため、怪物の攻撃が<strong>環境に影響を与える</strong>ようにデザインした。それは、「血の流れ」という感じで敵のブレットを作った。<br>　まずは、<strong>血の滝</strong>を作る。私はパーティクルシステムを利用し、以下のようなテキスチャーを使ってランダムな角度を付けて作った。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221113183533.png" alt=""><br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/Rec7.gif" alt=""><br>　次は、血の滝が地面に痕跡を残すようにする。私は<strong>スクリプトでOnParticleCollisionのファッション</strong>を使用し、血が地面にぶつかる所に新しい血のSpriteを<strong>インスタンス化</strong>する。そのファンクションを使うため、パーティクルシステムにCollisionの<strong>「Send Collision Messages」</strong>をオンにすることが必要である。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221113185103.png" alt=""><br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20221113185500.png" alt=""><br>　そして、新しい血のSpriteに<strong>Mask Interactionを「Visible Inside Mask」をチェック</strong>し、マップにMaskを付け、以下のような効果ができた。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/Rec8.gif" alt=""></p>
+<hr>
+<h3 id="2022-11-11"><a href="#2022-11-11" class="headerlink" title="2022/11/11"></a>2022/11/11</h3><p>　今日は前の日に作った怪物の<strong>攻撃能力を具体的な怪物に与えた</strong>。<br>　例として、幾つの怪物を地面に置いておき、それぞれの怪物に<strong>スクリプトでAIを付け</strong>、プレーヤーを攻撃するようになる。<br>　そして、プレーヤーが攻撃を受ける時、HPの減少を表現するため、私は簡易な<strong>UI</strong>を作った。ここまで、ゲームの<strong>基本的な循環</strong>ができた。<br>　効果が以下のように。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/Rec9.gif" alt=""></p>
+<hr>
+<h3 id="2022-11-13"><a href="#2022-11-13" class="headerlink" title="2022/11/13"></a>2022/11/13</h3><p>　今日は二つ目の攻撃効果を作った。</p>
+
       
     </div>
 
