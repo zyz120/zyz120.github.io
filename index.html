@@ -116,18 +116,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-count">9</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -156,6 +156,96 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/05/02/UE5_VFX_Learning_MagicBall/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="名が無い生身">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="四次元">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2024/05/02/UE5_VFX_Learning_MagicBall/" class="post-title-link" itemprop="url">NiagaraSystemでマジックボールを作る（学習メモ）</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2024-05-02 02:31:04 / Modified: 03:26:53" itemprop="dateCreated datePublished" datetime="2024-05-02T02:31:04+09:00">2024-05-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BE%8E%E6%9C%AF%E5%90%91/" itemprop="url" rel="index"><span itemprop="name">美术向</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="NiagaraSystemでマジックボールを作る"><a href="#NiagaraSystemでマジックボールを作る" class="headerlink" title="NiagaraSystemでマジックボールを作る"></a>NiagaraSystemでマジックボールを作る</h1><p>　今日はUE5のNiagaraSystemを使って三つのマジックボールを作った。作る時のキーポイントを記録したいと思う。</p>
+<hr>
+<h3 id="「１」エレクトリックボール（Electric-Ball）"><a href="#「１」エレクトリックボール（Electric-Ball）" class="headerlink" title="「１」エレクトリックボール（Electric Ball）"></a>「１」エレクトリックボール（Electric Ball）</h3><p><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/录制_2024_05_02_02_47_47_621.gif" alt=""></p>
+<p>　このボールは、主に二つのパーツで組み合わせて完成された。一つ目は、外のボールの殻で、二つ目は、中の雷の渦巻きである。
+　</p>
+<h4 id="ボールの殻を作る"><a href="#ボールの殻を作る" class="headerlink" title="ボールの殻を作る"></a>ボールの殻を作る</h4><p>　まず、マテリアルの基本設定をし、それは「BlendMode」を「Translucent」にすることと「ShadingMode」を「Unlit」にすることだ。<br>　殻の外部が色を付けられ、内部が透明にするため、「VertexNormalWS」と「CameraVector」をドット積で計算する。それで、カメラに向いているほど、計算結果が「1」に近い。そして「OneMinus」で、内部が「0」に近い、その数字を透明度にすると、望みの効果が出来る。</p>
+<p><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20240502030226.png" alt=""></p>
+<p>　そして、殻が周りの風景を映すため、一つのCubeMapを使った。そのCubeMapをサンプリングするため、Node「Reflection Vector」を使った。そのノードは、カメラから表面までの射線を反射したベクターだ。<br>　最後に、二つのパーツを組み合わせて完成する。</p>
+<p><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20240502030734.png" alt=""></p>
+<h4 id="雷の渦巻きを作る"><a href="#雷の渦巻きを作る" class="headerlink" title="雷の渦巻きを作る"></a>雷の渦巻きを作る</h4><p>　<br>　まず、デフォルトのUVの原点は左上なので、渦巻きを作るため、[UV.xy-(.5, .5)]*nの計算をする。その結果は以下である。</p>
+<p><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20240502031638.png" alt=""></p>
+<p>　そして、転換したUVを、「VectorToRadialValue」を使って、極座標に転換する。その極座標を使って、ちょっと乱雑なテキスチャーをサンプリングすると、渦巻っぽいの交換が出る。</p>
+<p><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/录制_2024_05_02_03_21_18_522.gif" alt=""></p>
+<p>　この効果を基にし、透明度とパーティクルカーラーを設定すると完了だ。</p>
+<h4 id="NiagaraSystemで組み合わせ"><a href="#NiagaraSystemで組み合わせ" class="headerlink" title="NiagaraSystemで組み合わせ"></a>NiagaraSystemで組み合わせ</h4><p><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20240502032408.png" alt=""></p>
+<hr>
+<h3 id="「２」火球（ファイアボール）"><a href="#「２」火球（ファイアボール）" class="headerlink" title="「２」火球（ファイアボール）"></a>「２」火球（ファイアボール）</h3><p><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/录制_2024_05_02_03_26_25_69.gif" alt=""></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
