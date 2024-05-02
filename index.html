@@ -190,7 +190,7 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2024-05-02 02:31:04 / Modified: 03:31:19" itemprop="dateCreated datePublished" datetime="2024-05-02T02:31:04+09:00">2024-05-02</time>
+      <time title="Created: 2024-05-02 02:31:04 / Modified: 22:58:26" itemprop="dateCreated datePublished" datetime="2024-05-02T02:31:04+09:00">2024-05-02</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -227,9 +227,42 @@
 <p><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/录制_2024_05_02_03_21_18_522.gif" alt=""></p>
 <p>　この効果を基にし、透明度とパーティクルカーラーを設定すると完了だ。</p>
 <h4 id="NiagaraSystemで組み合わせ"><a href="#NiagaraSystemで組み合わせ" class="headerlink" title="NiagaraSystemで組み合わせ"></a>NiagaraSystemで組み合わせ</h4><p><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20240502032408.png" alt=""></p>
+<p>　ここで注意すべきのポイントはいくつある。<br>　まず、このボールをマップの中で自由に移動するため、これらのEmitterで「Local Space」をチェックする（でないと、一つのパーティクルのライフタイムが終わるまでずっと同じ場所にいる）。</p>
+<p><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20240502202800.png" alt=""></p>
+<p>　次は、色を調整する時、HSVの「V」は明度であり、その数値を上げるほど、色の「強さ」も上がる。その「強さ」は、PostEffectでのBloom効果を調整する時に役に立つ。</p>
+<p><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20240502202830.png" alt=""></p>
 <hr>
 <h3 id="「２」火球（ファイアボール）"><a href="#「２」火球（ファイアボール）" class="headerlink" title="「２」火球（ファイアボール）"></a>「２」火球（ファイアボール）</h3><p><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/录制_2024_05_02_03_26_25_69.gif" alt=""></p>
-<p>　あーー眠い。明日アップデートする。</p>
+<p>　この火球の効果は主に三つのパーツの組み合わせで完成された。一つ目は真ん中の火炎の球体で、二つ目は球体の後ろにうっすりと点滅している放射線状な効果で、三つ目は周囲にある渦巻のような効果である。</p>
+<h4 id="火炎の球体"><a href="#火炎の球体" class="headerlink" title="火炎の球体"></a>火炎の球体</h4><p>　<br>　火炎の球体は球体のMesh＋マテリアルで完成する。MaterialのShaderの基本設定は下図のようにする。</p>
+<p><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20240502210434.png" alt=""></p>
+<p>　今回はBlendModeをTranslucentやAdditiveではなく、Maskedに設定するのは、「透明度」の数字を調整する必要がないからだ（「見える(1)」と「見えない(0)」だけで十分）。設定完了すると、Material Graphに以下のように、二つの煙のテキスチャーをサンプリングして乗算すると、効果が出る。</p>
+<p><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/录制_2024_05_02_21_13_55_309.gif" alt=""></p>
+<p>　その灰色の球体を「OpacityMask」に設定し、基本設定の「Opacity Mask Clip Value」を調整し、火球が見える。</p>
+<p>　そして、球体を着色する時、「Two Sided Sign」というノードを使った。このノードはMeshの表と裏のサーフェイス（triangle）に対するアウトプットは違い、表は「1」、裏は「-1」をアウトプットする。これを用いて火球の全体を完成する。</p>
+<p><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20240502212056.png" alt=""></p>
+<h4 id="放射線状の効果"><a href="#放射線状の効果" class="headerlink" title="放射線状の効果"></a>放射線状の効果</h4><p>　SpriteのUVを調整するだけで、この効果が実現できる。<br>　<br>　<img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20240502222052.png" alt=""></p>
+<p>　上図のように、まずUVから（.5, .5）のバーテックス（Vertex）を引き（原点が真ん中にし）、そしてNormalizeと、原点から同じ方向のすべてのポイントは同じ数値を持っている。この数値で任意模様のテキスチャーをサンプリングすると、放射線みたいな効果が出る。</p>
+<p><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/录制_2024_05_02_22_25_21_478.gif" alt=""></p>
+<h4 id="渦巻"><a href="#渦巻" class="headerlink" title="渦巻"></a>渦巻</h4><p>　一番目のエレクトリックボールの渦巻きに類似するので、上の文章を参考してください。</p>
+<hr>
+<h3 id="「３」波のボール"><a href="#「３」波のボール" class="headerlink" title="「３」波のボール"></a>「３」波のボール</h3><p><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/录制_2024_05_02_22_27_56_443.gif" alt=""></p>
+<p>　このボールは主に上記の二つのボールで使われたパーツの組み合わせで完成できる。しかし、緑色のリングの部分は少し記録しなければならないものがある。</p>
+<hr>
+<h4 id="緑色のリング"><a href="#緑色のリング" class="headerlink" title="緑色のリング"></a>緑色のリング</h4><p>　まずは、リングを作る。「RadialGradientExponential」ノードにCosine計算を加えると、リングのような効果が出る。この結果に、Powerで計算すると、より細いリングが出来る。</p>
+<p><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20240502224000.png" alt=""></p>
+<p>　そして、UVにテキスチャーでNoiseを加えると、リングが歪んでる感じができる。ここのトリックは、一つの「Dynamic Parameter」を使って、その「歪み」の程度をコントロールする。</p>
+<p><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20240502224433.png" alt=""><br>　<br>　そうすると、Niagara Systemでこのパラメータを操作することができる。下図のようにカーブを設定し、ライフタイムの最後に歪みながら消える効果が出る。</p>
+<p><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20240502224651.png" alt=""></p>
+<hr>
+<h3 id="ディストーション（Distortion）効果を作る"><a href="#ディストーション（Distortion）効果を作る" class="headerlink" title="ディストーション（Distortion）効果を作る"></a>ディストーション（Distortion）効果を作る</h3><p>　以上三つのボールの共通点は、バックグラウンドにはディストーション（Distortion）の効果がある。その効果をじつげんするため、Refractionを使う。下図のように基本設定をする。</p>
+<p><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20240502225245.png" alt=""></p>
+<p>　しかし、デフォルトで「Refraction」のチェックは不可能の状態であり、基本設定で「Refraction Method」を設定しなければならない。ここは「Noramlを使う」にした。</p>
+<p><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20240502225450.png" alt=""></p>
+<p>　そして下図のようにグラフを繋ぐと完成する。グラフの一番下の「Dynamic Parameter」を使った原因は、Niagara Systemでこのマテリアルを使う時、ディストーションの強さを調整しやすくしたいからだ。</p>
+<p><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/录制_2024_05_02_22_55_44_199.gif" alt=""></p>
+<hr>
+<p>　以上で全てのボールの紹介が完了した～</p>
 
       
     </div>
