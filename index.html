@@ -116,7 +116,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -391,96 +391,6 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/13/Hexo_Site_Make_Method/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="名が無い生身">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="四次元">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/09/13/Hexo_Site_Make_Method/" class="post-title-link" itemprop="url">Hexoで個人サイトを搭載する方法</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2022-09-13 23:17:52" itemprop="dateCreated datePublished" datetime="2022-09-13T23:17:52+09:00">2022-09-13</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2022-09-14 01:06:12" itemprop="dateModified" datetime="2022-09-14T01:06:12+09:00">2022-09-14</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%8A%80%E6%9C%AF%E5%90%91/" itemprop="url" rel="index"><span itemprop="name">技术向</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="Hexoで個人サイトを構築する方法"><a href="#Hexoで個人サイトを構築する方法" class="headerlink" title="　Hexoで個人サイトを構築する方法"></a>　Hexoで個人サイトを構築する方法</h1><p>　最近、新しいパソコンを買った。ブログをアップロードしたくて、もう一度ブログ環境を構築しなければならない。今度このような時に作成方法を忘れないようになる為、ここで構築ステップを記録しておく。</p>
-<h2 id=""><a href="#" class="headerlink" title="　"></a>　</h2><h2 id="Hexoとは"><a href="#Hexoとは" class="headerlink" title="Hexoとは"></a>Hexoとは</h2><p>　Hexoとは、Node.jsというプログラム言語で駆動し、静的サイトを構築するプログラムの一種である。</p>
-<hr>
-<h2 id="Hexoでサイトを構築するステップ"><a href="#Hexoでサイトを構築するステップ" class="headerlink" title="Hexoでサイトを構築するステップ"></a>Hexoでサイトを構築するステップ</h2><h4 id="Gitをインストール"><a href="#Gitをインストール" class="headerlink" title="Gitをインストール"></a>Gitをインストール</h4><p>　まず、<a target="_blank" rel="noopener" href="https://git-scm.com/download/win">Gitの公式サイト</a>から、Gitをダウンロードしておく。<br>　ダウンロードしてインストールした後、任意のフォルダーの空白スペースに右クリックすると、このようなメニューが見えるはずだ。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20220914004335.png" alt=""><br>　続いて、Git Bashで以下のように自分のGithubのユーザー名とメールアドレスのコンフィグを設定し、ssh秘密鍵を生成する。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name <span class="string">&quot;Github User Name&quot;</span></span><br><span class="line">git config --global user.email <span class="string">&quot;Github User EmailAddress&quot;</span></span><br><span class="line"></span><br><span class="line">ssh-keygen -t rsa -C <span class="string">&quot;Github User EmailAddress&quot;</span></span><br></pre></td></tr></table></figure><br>　そして、生成した秘密鍵ファイルをオープンして、その内容を全てコピーし、<a target="_blank" rel="noopener" href="https://github.com/settings/keys">Github Setting Keys</a>に移動してペーストする（Title任意）。<br>　完成後、Git Bashで次の命令を入力し、以下の画面と同じ結果が出たら、成功と見なす。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh git@github.com</span><br></pre></td></tr></table></figure><br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20220914005556.png" alt=""></p>
-<hr>
-<h4 id="Node-jsをインストール"><a href="#Node-jsをインストール" class="headerlink" title="Node.jsをインストール"></a>Node.jsをインストール</h4><p>　Gitをインストールした後、Node.jsのインストールも必要である。<br>　Node.jsの<a target="_blank" rel="noopener" href="https://nodejs.org/en/download/">公式サイト</a>でダウンロードし、インストールしておく。<br>　自分でそのインストールが成功するか否かをチェックすることができる。Cmdの中で次の命令を入力して、バージョニングが出てくると、成功とする。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">node -v</span><br><span class="line">npm -v</span><br></pre></td></tr></table></figure><br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20220914010046.png" alt=""></p>
-<hr>
-<h4 id="Hexoをインストール"><a href="#Hexoをインストール" class="headerlink" title="Hexoをインストール"></a>Hexoをインストール</h4><p>　最後は、Hexo自体のインストールである。<br>　Cmdの中で、次のnpm命令でHexoをダウンロードとインストールする。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure><br>　少し時間がかかる場合もあるので、安心に待ってください。</p>
-<hr>
-<h4 id="終わり"><a href="#終わり" class="headerlink" title="終わり"></a>終わり</h4><p>　以上のステップ全部終わったら、ブログ環境が全て構築完了である。<br>　これからまた楽しくブログを書こう。</p>
-<hr>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/13/Soft_Max_Function/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -571,6 +481,96 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/13/Hexo_Site_Make_Method/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="名が無い生身">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="四次元">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/09/13/Hexo_Site_Make_Method/" class="post-title-link" itemprop="url">Hexoで個人サイトを搭載する方法</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2022-09-13 23:17:52" itemprop="dateCreated datePublished" datetime="2022-09-13T23:17:52+09:00">2022-09-13</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2022-09-14 01:06:12" itemprop="dateModified" datetime="2022-09-14T01:06:12+09:00">2022-09-14</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E5%90%91/" itemprop="url" rel="index"><span itemprop="name">技术向</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="Hexoで個人サイトを構築する方法"><a href="#Hexoで個人サイトを構築する方法" class="headerlink" title="　Hexoで個人サイトを構築する方法"></a>　Hexoで個人サイトを構築する方法</h1><p>　最近、新しいパソコンを買った。ブログをアップロードしたくて、もう一度ブログ環境を構築しなければならない。今度このような時に作成方法を忘れないようになる為、ここで構築ステップを記録しておく。</p>
+<h2 id=""><a href="#" class="headerlink" title="　"></a>　</h2><h2 id="Hexoとは"><a href="#Hexoとは" class="headerlink" title="Hexoとは"></a>Hexoとは</h2><p>　Hexoとは、Node.jsというプログラム言語で駆動し、静的サイトを構築するプログラムの一種である。</p>
+<hr>
+<h2 id="Hexoでサイトを構築するステップ"><a href="#Hexoでサイトを構築するステップ" class="headerlink" title="Hexoでサイトを構築するステップ"></a>Hexoでサイトを構築するステップ</h2><h4 id="Gitをインストール"><a href="#Gitをインストール" class="headerlink" title="Gitをインストール"></a>Gitをインストール</h4><p>　まず、<a target="_blank" rel="noopener" href="https://git-scm.com/download/win">Gitの公式サイト</a>から、Gitをダウンロードしておく。<br>　ダウンロードしてインストールした後、任意のフォルダーの空白スペースに右クリックすると、このようなメニューが見えるはずだ。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20220914004335.png" alt=""><br>　続いて、Git Bashで以下のように自分のGithubのユーザー名とメールアドレスのコンフィグを設定し、ssh秘密鍵を生成する。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name <span class="string">&quot;Github User Name&quot;</span></span><br><span class="line">git config --global user.email <span class="string">&quot;Github User EmailAddress&quot;</span></span><br><span class="line"></span><br><span class="line">ssh-keygen -t rsa -C <span class="string">&quot;Github User EmailAddress&quot;</span></span><br></pre></td></tr></table></figure><br>　そして、生成した秘密鍵ファイルをオープンして、その内容を全てコピーし、<a target="_blank" rel="noopener" href="https://github.com/settings/keys">Github Setting Keys</a>に移動してペーストする（Title任意）。<br>　完成後、Git Bashで次の命令を入力し、以下の画面と同じ結果が出たら、成功と見なす。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh git@github.com</span><br></pre></td></tr></table></figure><br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20220914005556.png" alt=""></p>
+<hr>
+<h4 id="Node-jsをインストール"><a href="#Node-jsをインストール" class="headerlink" title="Node.jsをインストール"></a>Node.jsをインストール</h4><p>　Gitをインストールした後、Node.jsのインストールも必要である。<br>　Node.jsの<a target="_blank" rel="noopener" href="https://nodejs.org/en/download/">公式サイト</a>でダウンロードし、インストールしておく。<br>　自分でそのインストールが成功するか否かをチェックすることができる。Cmdの中で次の命令を入力して、バージョニングが出てくると、成功とする。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">node -v</span><br><span class="line">npm -v</span><br></pre></td></tr></table></figure><br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20220914010046.png" alt=""></p>
+<hr>
+<h4 id="Hexoをインストール"><a href="#Hexoをインストール" class="headerlink" title="Hexoをインストール"></a>Hexoをインストール</h4><p>　最後は、Hexo自体のインストールである。<br>　Cmdの中で、次のnpm命令でHexoをダウンロードとインストールする。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure><br>　少し時間がかかる場合もあるので、安心に待ってください。</p>
+<hr>
+<h4 id="終わり"><a href="#終わり" class="headerlink" title="終わり"></a>終わり</h4><p>　以上のステップ全部終わったら、ブログ環境が全て構築完了である。<br>　これからまた楽しくブログを書こう。</p>
+<hr>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/01/22/Lens_Language/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -585,6 +585,95 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           <a href="/2022/01/22/Lens_Language/" class="post-title-link" itemprop="url">レンズの言語</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2022-01-22 15:28:24" itemprop="dateCreated datePublished" datetime="2022-01-22T15:28:24+09:00">2022-01-22</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2022-09-14 01:06:27" itemprop="dateModified" datetime="2022-09-14T01:06:27+09:00">2022-09-14</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%BF%83%E7%90%86%E5%AD%A6/" itemprop="url" rel="index"><span itemprop="name">心理学</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="レンズの言語（The-Language-of-the-Lens）"><a href="#レンズの言語（The-Language-of-the-Lens）" class="headerlink" title="　レンズの言語（The Language of the Lens）"></a>　レンズの言語（The Language of the Lens）</h1><p>　映像は絵と同じく、作者が見ることや感じること、または思想を注いで創作した作品である。変化しない画像と違って、映像にはもう一つの軸、いわゆる<strong>時間軸</strong>がある。その時間という軸をうまく使ったら、画像より多くの情報や効果を表現することが可能になる。今日検討したい内容は、<strong>映像あるいはゲーム</strong>などの作品の中、視点を移動する時に使われるトリック、つまり、「レンズの言語」ということだ。<br>　レンズの言語とは、レンズそのものが<strong>言葉</strong>のように撮影者の<strong>意図を伝達する</strong>ことである。撮影する時の<strong>角度や構図、被写界深度や焦点距離</strong>により、観客が受ける感覚も大きく異なっている。それはまるで作者本人が直接に言葉で観客に作品について解説しているようだ。<br>　私は次の幾つかの方面で「レンズの言語」を具体的に紹介する。</p>
+<hr>
+<h2 id="レンズとの距離（ショット）"><a href="#レンズとの距離（ショット）" class="headerlink" title="　レンズとの距離（ショット）"></a>　レンズとの距離（ショット）</h2><h3 id="ロングショット"><a href="#ロングショット" class="headerlink" title="　ロングショット"></a>　ロングショット</h3><p>　ロングショットとはカメラと被写体の<strong>距離が長い</strong>状態で撮影する画面である。人間の場合、人を頭から足まで映ることが多くて、人間以外なら、ストーリーが発生した環境を映ることが多い。それは主に<strong>全体的に人間関係とストーリーの舞台</strong>を紹介するためだ。例えば、サマータイムレンダのエンディングに主人公がいる島の全体像が映られている。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20220913183613.png" alt=""></p>
+<center><font size=2 color=#AAAAAA>[サマータイムレンダのエンディング]</font></center>
+
+<hr>
+<h3 id="ミディアムショット"><a href="#ミディアムショット" class="headerlink" title="　ミディアムショット"></a>　ミディアムショット</h3><p>　ミディアムショットはロングショットとクローズショットの真ん中で、中間的な感じがあり、普通は人の腰または胸から頭までの部分（半身像）が映られている。それは画面の中の人数により、違い意味がある。<br>　同一の画面に複数な人がいれば、彼らの動作と関係を表す場合が多くて、一人しかいない場合は、その人の動作と表情を強調することが一般的に考えられている。<br><img src="https://raw.githubusercontent.com/zyz120/Z_FigureBed/main/20220913184815.png" alt=""></p>
+<center><font size=2 color=#AAAAAA>[东京ゴッドファーザーズ]</font></center>
+
+<hr>
+<h3 id="クローズショット・クローズアップ"><a href="#クローズショット・クローズアップ" class="headerlink" title="クローズショット・クローズアップ"></a>クローズショット・クローズアップ</h3>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/01/22/%E5%8D%92%E5%88%B6Video/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="名が無い生身">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="四次元">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/01/22/%E5%8D%92%E5%88%B6Video/" class="post-title-link" itemprop="url">レンズの言語</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1169,7 +1258,7 @@
 
 <div class="copyright">
   &copy; 
-  <span itemprop="copyrightYear">2024</span>
+  <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
